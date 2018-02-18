@@ -23,7 +23,7 @@ poplr_pstat <- function( vf, porder, type = "slr", sl_test = NULL ) {
   evaltxt <- paste( "vfsettings$", vf$tpattern[1], "$bs", sep = "" )
   bs <- eval( parse( text = evaltxt ) )
   vf <- vf[,locini:ncol( vf )]
-  if (!is.na(bs)) vf <- vf[,-bs]
+  if ( !is.na( bs[1] ) ) vf <- vf[,-bs]
   vf <- as.matrix( vf )
 # number of permutations, locations, and tests
   nperm <- nrow( porder )

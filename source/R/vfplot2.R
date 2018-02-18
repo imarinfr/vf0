@@ -102,16 +102,16 @@ vfplot2 <- function( vf, plotType, notSeenAsBlack = TRUE, newWindow = FALSE,
   }  else {
     plotColor  <- vfcolormap( as.numeric( devP[,locini:( locini + loc_num - 1 )] ) )
 # exclude blind spot locations
-    if( all( !is.na( bspos ) ) ) dev <- dev[,-( locini + bspos - 1 )]
+    if( all( !is.na( bspos[1] ) ) ) dev <- dev[,-( locini + bspos - 1 )]
     if( notSeenAsBlack ) {
       idxblack <- which( vf[locini:( locini + loc_num - 1 )] <= 0)
       if( length( idxblack ) > 0 ) plotColor[idxblack,] <- 0
     }
     lenbs <- 0
-    if( all( !is.na( bspos ) ) ) lenbs <- length( bspos )
+    if( all( !is.na( bspos[1] ) ) ) lenbs <- length( bspos )
     cloneDev <- as.character( round( dev[,locini:( locini + loc_num - lenbs - 1 )] ) )
-    if( all( !is.na( bspos ) ) ) patternMap <- patternMap[-bspos,]
-    if( all( !is.na( bspos ) ) ) plotColor  <- plotColor[-bspos,]
+    if( all( !is.na( bspos[1] ) ) ) patternMap <- patternMap[-bspos,]
+    if( all( !is.na( bspos[1] ) ) ) plotColor  <- plotColor[-bspos,]
   }
 
   # if NA then plot all in black

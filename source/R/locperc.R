@@ -38,13 +38,13 @@ locperc <- function( vals, stds, percentiles = c( 0.5, 1, 2, 5, 95 ),
 # get z-scores and remove blind spot
   zscore <- vals[,locini:( locini + settings$locnum - 1 )]
   stdloc <- t( matrix( rep( stds, nrow( vals ) ), nrow = settings$locnum, ncol = nrow( vals ) ) )
-  if( all( !is.na( settings$bs ) ) ) {
+  if( all( !is.na( settings$bs[1] ) ) ) {
     zscore <- zscore[,-settings$bs]
     stdloc <- stdloc[,-settings$bs]
   }
   zscore <- zscore / stdloc
   stds2  <- stds
-  if( all( !is.na( settings$bs ) ) ) stds2  <- stds2[-settings$bs]
+  if( all( !is.na( settings$bs[1] ) ) ) stds2  <- stds2[-settings$bs]
 
 # create the data frame to return
   locper  <- NULL
@@ -63,7 +63,7 @@ locperc <- function( vals, stds, percentiles = c( 0.5, 1, 2, 5, 95 ),
   }
   locper  <- as.data.frame( locper )
   locper2 <- locper
-  if( all( !is.na( settings$bs ) ) ) locper2 <- locper2[-settings$bs,]
+  if( all( !is.na( settings$bs[1] ) ) ) locper2 <- locper2[-settings$bs,]
   idx     <- attr( locper2, "row.names" )
 
 # pool locations?
@@ -75,7 +75,7 @@ locperc <- function( vals, stds, percentiles = c( 0.5, 1, 2, 5, 95 ),
     }
   } else {
     lenbs <- 0
-    if( all( !is.na( settings$bs ) ) ) lenbs <- length( settings$bs )
+    if( all( !is.na( settings$bs[1] ) ) ) lenbs <- length( settings$bs )
     locper2 <- t( matrix( rep( wtd.quantile( c( as.matrix( zscore ) ), probs = percentiles / 100, type = type,
                                              weights = rep( idweight, settings$locnum - lenbs ),
                                              normwt = TRUE ),
@@ -85,7 +85,7 @@ locperc <- function( vals, stds, percentiles = c( 0.5, 1, 2, 5, 95 ),
   }
 
   locper[idx,] <- locper2
-  if( all( !is.na( settings$bs ) ) ) locper[settings$bs,] <- NA
+  if( all( !is.na( settings$bs[1] ) ) ) locper[settings$bs,] <- NA
   
   return( locper )
 }

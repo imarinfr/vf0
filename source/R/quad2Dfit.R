@@ -9,7 +9,7 @@ quad2Dfit <- function( val, patternMap, bspos ) {
   val_sm        <- as.data.frame( val_sm )
 
 # remove blind spot
-  if( all( !is.na( bspos ) ) ) val_sm <- val_sm[-bspos,]
+  if( all( !is.na( bspos[1] ) ) ) val_sm <- val_sm[-bspos,]
 
   formula <- result ~ x + y + I( x^2 ) + I( y^2 )
 #  val_sm$result <- predict( lm( formula, data = val_sm ) )

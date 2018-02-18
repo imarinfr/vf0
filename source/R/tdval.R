@@ -20,7 +20,7 @@ tdval <- function( vf ) {
   }
 
 # Fill with NA the blind-spot sensitivities
-  if( all( !is.na( bspos ) ) ) td[,bspos + locini - 1] <- NA 
+  if( all( !is.na( bspos[1] ) ) ) td[,bspos + locini - 1] <- NA 
 
   return( td )
 }
