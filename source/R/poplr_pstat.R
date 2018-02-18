@@ -19,7 +19,7 @@ poplr_pstat <- function( vf, porder, type = "slr", sl_test = NULL ) {
   locini   <- eval( parse( text = texteval ) )
 
 # extract age and location values from vf and delete blind spots
-  age <- vf$sage
+  age <- as.numeric( vf$tdate - vf$tdate[1] ) / 365.25 # it should be difference in years from basline date
   evaltxt <- paste( "vfsettings$", vf$tpattern[1], "$bs", sep = "" )
   bs <- eval( parse( text = evaltxt ) )
   vf <- vf[,locini:ncol( vf )]
