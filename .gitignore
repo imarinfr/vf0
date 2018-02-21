@@ -5,4 +5,8 @@
 .DS_Store
 visualFields.Rcheck/
 visualFields.Rproj
+<<<<<<< HEAD
 ignoreThisFolder/
+=======
+ignoreThisFolder/
+>>>>>>> 5ee1741a0c76e61d9bfd905125304d64fa315060
