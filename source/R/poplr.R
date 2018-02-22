@@ -32,8 +32,7 @@ poplr <- function( vf, nperm = 5000, type = "slr", truncVal = 1,
   # get and remove blind spot
   evaltxt <- paste("vfsettings$", vf$tpattern[1], "$bs", sep = "")
   bs <- eval( parse( text = evaltxt ) ) + locini - 1
-  if (!is.na(bs)) res$vfdata <- res$vfdata[-bs]
-
+  if ( !is.na( bs[1] ) ) res$vfdata <- res$vfdata[-bs]
   res$nvisits  <- nrow( vf )
   res$nperm    <- nperm
   res$type     <- type

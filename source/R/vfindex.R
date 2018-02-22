@@ -51,7 +51,7 @@ vfindex <- function( vf, td2pdcutoff = -20, perc = 5, vfiset = visualFields::vfi
     tdp_iter <- as.numeric(tdp[i,locini:( locini - 1 + locnum )] )
     pdp_iter <- as.numeric(pdp[i,locini:( locini - 1 + locnum )] )
 # remove blind spot from everywhere
-    if( all( !is.na( bs ) ) ) {
+    if( all( !is.na( bs[1] ) ) ) {
       vf_iter  <- vf_iter[-bs]
       td_iter  <- td_iter[-bs]
       pd_iter  <- pd_iter[-bs]

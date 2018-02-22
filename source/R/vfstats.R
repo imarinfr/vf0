@@ -32,7 +32,7 @@ vfstats <- function( vf ) {
     td_iter <- as.numeric(td[i,locini:( locini - 1 + locnum )] )
     pd_iter <- as.numeric(pd[i,locini:( locini - 1 + locnum )] )
 # remove BS from everywhere
-    if( all( !is.na( bs ) ) ) {
+    if( all( !is.na( bs[1] ) ) ) {
       wgt     <- wgt[-bs,]
       vf_iter <- vf_iter[-bs]
       td_iter <- td_iter[-bs]
