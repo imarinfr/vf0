@@ -1,3 +1,11 @@
+#' Import visual field data from Haag-Streit Eyesuite
+#' 
+#' \code{loadvfEyesuite} imports visual field data from the Eyesuite software by Haag-Streit. These data are converted into a vf object.
+#' 
+#' @param filename the filename of the csv-file
+#' @param date_order the order of the dates used in the specific locale
+#' @return a vf object
+
 loadvfEyesuite <- function(filename, date_order = "dmy") {
 
   eyesuiteNames <- c(
@@ -19,10 +27,8 @@ loadvfEyesuite <- function(filename, date_order = "dmy") {
   
   names(vFieldsRaw)[seq(eyesuiteNames)] <- eyesuiteNames
   
-  # vFieldsRaw[locnum %in% c(59, 73), ]
-  
   # use factors to replace values
-  # the data.table function for replacing by reference is used to safe time
+  # the data.table function ":=" for replacing by reference is used to safe time
   vFieldsRaw[, eye := factor(eye, levels = c(0, 1), labels = c("OD", "OS"))]
   vFieldsRaw[, strategy := factor(strategy, levels = c(0, 1, 2, 3, 4, 6, 11), 
                              labels = c("normal", "dynamic", "2LT/normal", "low vision", "1LT", "TOP", "GATE"))]
@@ -30,22 +36,37 @@ loadvfEyesuite <- function(filename, date_order = "dmy") {
                                  labels = c("pG1", "BT"))]
   vFieldsRaw[, tperimetry := factor(tperimetry, levels = c(0, 1), labels = c("sap", "swap"))]
   
-  locnames <- paste("L", 1:59, sep = "")
-  header <- vFieldsRaw[, 1:43]
+  # add numbers for each visual field
+  vFieldsRaw[, i := .I]
+  
+  #extract the header information (id, tperimetry, ...)
+  header <- vFieldsRaw[, .SD, .SDcols = id:bcva]
   header[, i := .I]
   
-  ind1 <- c(rep(FALSE, 43), rep(c(FALSE, FALSE, FALSE, TRUE, FALSE), 59))
-  ind2 <- c(rep(FALSE, 43), rep(c(FALSE, FALSE, TRUE, FALSE, FALSE), 59))
-  phase1 <- vFieldsRaw[, ..ind1] / 10
-  setnames(phase1, locnames)
-  phase1[, i := .I]
-  phase2 <- vFieldsRaw[, ..ind2] / 10
-  setnames(phase2, locnames)
-  phase2[, i := .I]
-  l = list(phase1, phase2)
-  vFieldsRaw <- rbindlist(l, use.names = T)
-  vFieldsRaw <- vFieldsRaw[, lapply(.SD, mean, na.rm = T), by = i]
+  # create a data table from the pattern
+  patternMatrix <- data.table(saplocmap$pG1[, c("loc", "xod", "yod")])
   
+  #function to extract sensitivities for the different loci
+  extractLocations <- function(tLine) {
+    
+    locMatrix <- as.data.table(matrix(unlist(tLine[, 44:338]) / 10, 59, 5, byrow = T))
+    names(locMatrix) <- c("xod", "yod", "sens1", "sens2", "norm")
+    
+    if(tLine[1, 18] == "OS") locMatrix[, xod := -xod]
+
+    
+    combinedTable <- locMatrix[patternMatrix, on = c("xod", "yod")]
+    returnTable <- apply(combinedTable[, .(sens1, sens2)], 1, mean, na.rm = T)
+    names(returnTable) <- paste("L", as.character(combinedTable$loc), sep = "")
+    rValue <- as.data.table(t(as.matrix(returnTable, 1, 59)))
+    return(rValue)
+    
+  }
+  
+  # apply the extractLocations function on each row
+  vFieldsRaw <- vFieldsRaw[, extractLocations(.SD), by = i]
+  
+  # merge sensitivity data with header
   vFieldsRaw <- header[vFieldsRaw, on = "i"]
   vFieldsRaw[, i := NULL]
   
@@ -63,12 +84,13 @@ loadvfEyesuite <- function(filename, date_order = "dmy") {
   vFieldsRaw[, sbsy := -3]
   vFieldsRaw[, sfp := false_positives / positive_catch_trials]
   vFieldsRaw[, sfn := false_negatives / negative_catch_trials]
-  vFieldsRaw[, fsl := NA]
+  vFieldsRaw[, sfl := NA]
   vFieldsRaw[, sduration := as.character(testduration)]
   vFieldsRaw[, spause := NA]
   
+  #exract final table
   finalIndex <- c("id", "tperimetry", "talgorithm", "tpattern", "tdate", "ttime", "stype", "sage", "seye", "sbsx", "sbsy", "sfp",
-                  "sduration", "spause")
+                  "sfn", "sfl", "sduration", "spause")
   finalIndex <- c(finalIndex, paste("L", 1:59, sep = ""))
   
   # return vf-object
