@@ -22,7 +22,8 @@ loadvfEyesuite <- function(filename, date_order = "dmy") {
   # Read the csv-file exported by EyeSuite
   vFieldsRaw <- 
     data.table(
-      read.csv2(filename, header = F, quote = "", stringsAsFactors = F)
+      read.csv2(filename, header = F, quote = "", stringsAsFactors = F, fill = T,
+                col.names = paste("V", 1:2000, sep = ""))
     )
   
   names(vFieldsRaw)[seq(eyesuiteNames)] <- eyesuiteNames
@@ -53,7 +54,6 @@ loadvfEyesuite <- function(filename, date_order = "dmy") {
     names(locMatrix) <- c("xod", "yod", "sens1", "sens2", "norm")
     
     if(tLine[1, 18] == "OS") locMatrix[, xod := -xod]
-
     
     combinedTable <- locMatrix[patternMatrix, on = c("xod", "yod")]
     returnTable <- apply(combinedTable[, .(sens1, sens2)], 1, mean, na.rm = T)
