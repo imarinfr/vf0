@@ -30,7 +30,7 @@ loadvfEyesuite <- function(filename, date_order = "dmy") {
   
   # use factors to replace values
   # the data.table function ":=" for replacing by reference is used to safe time
-  vFieldsRaw[, eye := factor(eye, levels = c(0, 1), labels = c("OD", "OS"))]
+  vFieldsRaw[, eye := factor(eye, levels = c(0, 1, 3), labels = c("OD", "OS", "binocular"))]
   vFieldsRaw[, strategy := factor(strategy, levels = c(0, 1, 2, 3, 4, 6, 11), 
                              labels = c("normal", "dynamic", "2LT/normal", "low vision", "1LT", "TOP", "GATE"))]
   vFieldsRaw[, pattern := factor(pattern, levels = c("G", "BT"),
@@ -46,6 +46,12 @@ loadvfEyesuite <- function(filename, date_order = "dmy") {
   
   # create a data table from the pattern
   patternMatrix <- data.table(saplocmap$pG1[, c("loc", "xod", "yod")])
+  
+  # exclude binocular visual fields
+  if(any(vFieldsRaw$eye == "binocular")) {
+    warning("Binocular visual fields are not supported! Binocular visual fields have been removed.")
+    vFieldsRaw <- vFieldsRaw[eye != "binocular", ]
+  }
   
   #function to extract sensitivities for the different loci
   extractLocations <- function(tLine) {
