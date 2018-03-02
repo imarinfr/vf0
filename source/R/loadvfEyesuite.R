@@ -90,7 +90,7 @@ loadvfEyesuite <- function(filename, date_order = "dmy") {
   vFieldsRaw[, sbsy := -3]
   vFieldsRaw[, sfp := false_positives / positive_catch_trials]
   vFieldsRaw[, sfn := false_negatives / negative_catch_trials]
-  vFieldsRaw[, sfl := NA]
+  vFieldsRaw[, sfl := repetitions / questions]
   vFieldsRaw[, sduration := as.character(testduration)]
   vFieldsRaw[, spause := NA]
   
