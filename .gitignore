@@ -3,12 +3,9 @@
 .RData
 .Ruserdata
 .DS_Store
-<<<<<<< HEAD
-=======
 vfgit.Rproj
 .gitignore
 .Rapp.history
->>>>>>> upstream/master
 visualFields.Rcheck/
 visualFields.Rproj
 ignoreThisFolder/
