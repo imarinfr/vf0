@@ -5,7 +5,7 @@ This is my fork of the official repository imarinfr/visualFields. Follow these s
 
 + install the devtools package
 + use the install_github command as shown below
-+ use the `ref parameter to select a branch
++ use the `ref` parameter to select a branch
 
 ```
 install.packages("devtools")
