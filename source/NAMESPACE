@@ -81,7 +81,7 @@ export( ageLinearModel,
 importFrom( "grDevices", "col2rgb", "dev.new", "dev.off", "pdf", "rgb", "xy.coords" )
 importFrom( "graphics", "axis", "box", "grid", "hist", "lines", "par", "plot", "points", "segments", "text", "title", "symbols", "strheight", "strwidth" )
 importFrom( "stats", "approx", "glm", "lm", "make.link", "optim", "predict", "pt", "quantile", "sd", "var", "weighted.mean" )
-importFrom( "utils", "packageDescription", "head", "read.csv", "write.csv", "write.table" )
+importFrom( "utils", "packageDescription", "head", "read.csv", "read.csv2", "write.csv", "write.table" )
 importFrom( "Hmisc", "ceil", "wtd.quantile", "wtd.var" )
 importFrom( "matrixStats", "colSds", "colVars", "rowMaxs", "rowMins" )
 importFrom( "grid", "gpar", "grid.rect", "grid.text", "pushViewport", "seekViewport", "viewport", "vpList", "vpTree" )
