@@ -4,12 +4,12 @@
 \alias{loadvfEyesuite}
 \title{Import visual field data from Haag-Streit Eyesuite}
 \usage{
-loadvfEyesuite(filename, date_order = "dmy")
+loadvfEyesuite(filename, date_format = "\%d.\%m.\%Y")
 }
 \arguments{
 \item{filename}{the filename of the csv-file}
 
-\item{date_order}{the order of the dates used in the specific locale}
+\item{date_format}{the order of the dates used in the specific locale}
 }
 \value{
 a vf object
