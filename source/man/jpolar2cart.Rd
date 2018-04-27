@@ -2,10 +2,9 @@
 \alias{jpolar2cart}
 \title{converts to \code{(x,y)} in degrees from polar coordinates}
 \description{converts to \code{(x,y)} in degrees from polar coordinates. It is the inverse of \code{( cart2jpolar)}}
-\usage{jpolar2cart( rpsi, xy0 = c( 15, 2 ) )}
+\usage{jpolar2cart( rpsi )}
 \arguments{
   \item{rpsi}{Visual field location in polar coordinates}
-  \item{xy0}{Center of the blind spot. Default is \code{(15,2)}}
 }
 \details{Input rpsi needs to be a data frame. It returns a data frame with the Cartesian coordinates}
 

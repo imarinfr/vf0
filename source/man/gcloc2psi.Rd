@@ -2,10 +2,9 @@
 \alias{gcloc2psi}
 \title{Angle of incidence in the optic nerve head for vf locations}
 \description{This is the inverse of the model: it obtains the angle of incidence psi of the average path that passes through position \code{(x,y)}}
-\usage{gcloc2psi( xy, xy0 = c( 15, 2 ), r0 = 4 )}
+\usage{gcloc2psi( xy, r0 = 4 )}
 \arguments{
   \item{xy}{Visual field location in Cartesian coordinates}
-  \item{xy0}{Center of the blind spot. Default is \code{(15,2)}}
   \item{r0}{Radius of the optic head nerve. It is a necessity of the model and changing it, changes the calculated average bundle paths. Default value is \code{4}}
 }
 
