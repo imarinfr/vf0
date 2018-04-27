@@ -97,14 +97,14 @@ loadvfEyesuite <- function(filename, date_format = "%d.%m.%Y") {
   
   # create a data table from the pattern
   patternMatrix <-
-    saplocmap$pG1[, c("loc", "xod", "yod")]
+    visualFields::saplocmap$pG1[, c("loc", "xod", "yod")]
   
   # exclude binocular visual fields
   if (any(vFieldsRaw$eye == "binocular")) {
     warning(
       "Binocular visual fields are not supported! Binocular visual fields have been removed."
     )
-    vFieldsRaw <- vFieldsRaw[eye != "binocular",]
+    vFieldsRaw <- vFieldsRaw[vFieldsRaw$eye != "binocular", ]
   }
   
   #function to extract sensitivities for the different loci
