@@ -15,7 +15,7 @@ vfplot_poplr <- function( sl, pval, vfinfo, newWindow = FALSE,
   evaltxt <- paste("vfsettings$", vfinfo$tpattern[1], "$bs", sep = "")
   bs <- eval( parse( text = evaltxt ) )
 
-  if( length( bs ) > 0 ) {
+  if( !is.na( bs[1] ) ) {
     bsloc <- patternMap[bs,]
     patternMap <- patternMap[-bs,]
   } else {

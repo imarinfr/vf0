@@ -8,7 +8,7 @@ Author: Ivan Marin-Franch <ivan.marin.franch@gmail.com>
 Maintainer: Ivan Marin-Franch <ivan.marin.franch@gmail.com>
 URL: http://people.eng.unimelb.edu.au/aturpin/opi/index.html
 Depends: R (>= 2.14.0)
-Imports: stats, utils, grid, flip (>= 2.1), matrixStats, Hmisc, gtools, deldir, spatstat, data.table, lubridate
+Imports: stats, utils, grid, flip (>= 2.1), matrixStats, Hmisc, gtools, deldir, spatstat
 LazyData: yes
 License: GPL (>= 3.0)
 RoxygenNote: 6.0.1
