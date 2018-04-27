@@ -89,10 +89,4 @@ importFrom( "flip", "make.permSpace" )
 importFrom( "gtools", "combinations" )
 importFrom( "deldir", "deldir", "tile.list" )
 importFrom( "spatstat", "ppp", "delaunay" )
-<<<<<<< HEAD
 importFrom( "stats", "optimize" )
-=======
-importFrom( "stats", "optimize" )
-importFrom( "data.table", ":=", "as.data.table", "data.table" )
-importFrom( "lubridate", "parse_date_time" )
->>>>>>> 40f432fd89e3177578d86db527fe92bc77857f2a
