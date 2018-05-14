@@ -15,6 +15,7 @@ ghranktd <- function( td, minPts = 2, strategy = "isospaced", withinNormal = 95,
   ghtdr$scaleFactor  <- scaleFactor
 # checks
   if( strategy != "parallel" & strategy != "isospaced" & strategy != "glmfit" ) stop( "wrong strategy. Choos between 'parallel' or 'isospaced' " )
+  if( nrow( td ) > 1) stop( "pass only one visual field here" )
   if( pCentral < 0.5 ) stop( "use at least half of the TD rank curve" )
 
   texteval <- "vfsettings$locini"
