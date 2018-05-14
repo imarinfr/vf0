@@ -1,9 +1,5 @@
 ghpostd <- function( td, correction = FALSE, rankRef = c( "default" ) ) {
 
-  if( nrow( td ) > 1) {
-    stop( "pass only one visual field here" )
-  }
-
   texteval <- "vfsettings$locini"
   locini   <- eval( parse( text = texteval ) )
 

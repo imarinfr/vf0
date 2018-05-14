@@ -92,8 +92,8 @@ vfplot_poplr <- function( sl, pval, vfinfo, newWindow = FALSE,
 
 # create a new window and plot data in it
 # window rescale is set to fixed to ensure re-sizing window doesn't re-size the plot
-  height <- width * ( ymax - ymin ) / ( xmax - xmin )
   if( newWindow ) {
+    height <- width * ( ymax - ymin ) / ( xmax - xmin )
     device <- options( "device" )
     if( .Platform$OS.type == "unix" ) {
       if( Sys.info()["sysname"] == "Darwin" ) {
