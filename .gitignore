@@ -9,4 +9,5 @@ vfgit.Rproj
 visualFields.Rcheck/
 visualFields.Rproj
 ignoreThisFolder/
+*.tar.gz
 
