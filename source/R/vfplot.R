@@ -15,10 +15,8 @@ vfplot <- function( vf, plotType,
   bsxy$y <- c( 3, -3 )
   bsxy   <- as.data.frame( bsxy )
   
-  # texteval <- "vfsettings$locini"
-  # locini   <- eval( parse( text = texteval ) )
-  
-  locini <- visualFields::vfsettings$locini
+  texteval <- "vfsettings$locini"
+  locini   <- eval( parse( text = texteval ) )
   
   # construct the pattern string based on the pattern type
   evaltxt <- paste( "vfsettings$", vf$tpattern, "$locnum", sep = "" )
