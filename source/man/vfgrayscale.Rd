@@ -15,9 +15,4 @@
 
 \seealso{\code{\link{vfcolormap}}}
 
-\examples{
-# DO NOT EXECUTE
-#vfgrayscale( sens )
-}
-
 \author{Ivan Marin-Franch}

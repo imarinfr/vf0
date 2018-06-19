@@ -12,9 +12,4 @@
 
 \seealso{ \code{\link{loadvfxml}}, \code{\link{xmlvfval}} }
 
-\examples{
-# DO NOT RUN
-#xmldevval( xmllines )
-}
-
 \author{Ivan Marin-Franch}

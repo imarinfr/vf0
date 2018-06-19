@@ -15,7 +15,7 @@ Data frame with the radial and angular coordinates
 \seealso{\code{\link{jpolar2cart}}}
 
 \examples{
-cart2jpolar( data.frame( x = c( 0, 10 ), y = c( 0, 10 ) ) )
+  cart2jpolar( data.frame( x = c( 0, 10 ), y = c( 0, 10 ) ) )
 }
 
 \author{Ivan Marin-Franch}

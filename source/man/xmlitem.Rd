@@ -11,9 +11,4 @@
 \details{extracts from a loaded XML file the info of a tag}
 \seealso{\code{\link{loadvfxml}}, \code{\link{loadvfcsv}},\code{\link{xmlblock}}}
 
-\examples{
-# DO NOT RUN
-#xmlitem( tag, xmllines )
-}
-
 \author{Ivan Marin-Franch}

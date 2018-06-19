@@ -11,9 +11,4 @@
 
 \seealso{ \code{\link{loadvfxml}}, \code{\link{xmldevval}} }
 
-\examples{
-# DO NOT RUN
-#xmlvfval( xmllines, patternMap = saplocmap$p24d2 )
-}
-
 \author{Ivan Marin-Franch}

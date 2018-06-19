@@ -14,8 +14,4 @@
 
 \seealso{ \code{\link{ageLinearModel}}, \code{\link{locperc}}, \code{\link{quad2Dfit}} }
 
-\examples{
-#sdnvghr( vf )
-}
-
 \author{Ivan Marin-Franch}

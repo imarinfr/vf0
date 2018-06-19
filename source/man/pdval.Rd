@@ -11,8 +11,8 @@
 \seealso{ \code{\link{pdpmap}}, \code{\link{tdval}}, \code{\link{tdpmap}} }
 
 \examples{
-td  <- tdval( vf91016right )
-pd  <- pdval( td )
+  td  <- tdval( vf91016right )
+  pd  <- pdval( td )
 }
 
 \author{Ivan Marin-Franch}

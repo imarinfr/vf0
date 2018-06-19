@@ -24,8 +24,4 @@
 
 \seealso{\code{\link{vfcolormap}}}
 
-\examples{
-ringmapgraph()
-}
-
 \author{Ivan Marin-Franch}

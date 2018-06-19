@@ -18,10 +18,4 @@
 
 \seealso{ \code{\link{loadvfcsv}}, \code{\link{loadvfxmlbatch}} }
 
-\examples{
-# DO NOT RUN
-#filename <- # Add the XML file name
-#vf       <- loadvfxml( filename = filename, patternMap = saplocmap$p24d2 )
-}
-
 \author{Ivan Marin-Franch}

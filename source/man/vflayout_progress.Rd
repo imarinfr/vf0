@@ -22,7 +22,9 @@
 \seealso{\code{\link{vflayout}}, \code{\link{vflayout_poplr}}}
 
 \examples{
-#vflayout_progress( vf91016left, plotType = "td" )
+  \donttest{
+    vflayout_progress( vf91016left, plotType = "td" )
+  }
 }
 
 \author{Ivan Marin-Franch}

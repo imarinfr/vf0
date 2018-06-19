@@ -22,9 +22,4 @@
 
 \seealso{\code{\link{vfplot}}}
 
-\examples{
-# DO NOT EXECUTE
-#vfplotloc( vals )
-}
-
 \author{Chaitanya Khadilkar, Ivan Marin-Franch}

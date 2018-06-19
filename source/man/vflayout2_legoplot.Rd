@@ -46,7 +46,9 @@ displays a legoplot visualization for change in sensitivities over time of visua
 \seealso{\code{\link{vflayout2}}, \code{\link{vflayout2_poplr}}}
 
 \examples{
-#vflayout2_legoplot( vf91016right )
+  \donttest{
+    vflayout2_legoplot( vf91016right )
+  }
 }
 
 \author{Ivan Marin-Franch}

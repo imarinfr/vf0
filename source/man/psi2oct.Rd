@@ -13,7 +13,7 @@
 \value{The angle of incidence in the circular oct scan}
 
 \examples{
-psi2oct( 90 + 45 )
+  psi2oct( 90 + 45 )
 }
 
 \author{Ivan Marin-Franch}

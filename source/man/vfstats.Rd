@@ -15,7 +15,7 @@
 \seealso{\code{\link{vfstatspmap}}, \code{\link{vfindex}}, \code{\link{vfindexpmap}}}
 
 \examples{
-vfs <- vfstats( vf91016right )
+  vfs <- vfstats( vf91016right )
 }
 
 \author{Ivan Marin-Franch}

@@ -25,7 +25,7 @@ The vfplot function operates on a single row of visual fileds (vf). Depending on
 \seealso{\code{\link{vfplotloc}}}
 
 \examples{
-vfplot( vf91016right[15,], plotType = "td" )
+  vfplot( vf91016right[15,], plotType = "td" )
 }
 
 \author{Chaitanya Khadilkar, Ivan Marin-Franch}

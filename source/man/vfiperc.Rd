@@ -18,9 +18,4 @@
 
 \seealso{ \code{\link{vfindex}}, \code{\link{vfstats}}, \code{\link{gloperc}}, \code{\link{locperc}} }
 
-\examples{
-# DO NOT EXECUTE
-#vfiperc( vals )
-}
-
 \author{Ivan Marin-Franch}

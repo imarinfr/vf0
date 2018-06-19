@@ -24,7 +24,7 @@ A function that returns angular coordinates for each radial coordinate.
 \seealso{\code{\link{gcloc2psi}}}
 
 \examples{
-fiberpathpsi( 90 + 45 )
+  fiberpathpsi( 90 + 45 )
 }
 
 \author{Ivan Marin-Franch}

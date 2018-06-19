@@ -51,8 +51,8 @@
 }
 
 \examples{
-res <- poplr( vf91016right )
-vfplot2_poplr( res$sl, res$pval, res$vfdata )
+  res <- poplr( vf91016right )
+  vfplot2_poplr( res$sl, res$pval, res$vfdata )
 }
 
 \author{Ivan Marin-Franch, Chaitanya Khadilkar}

@@ -13,10 +13,4 @@
 
 \seealso{ \code{\link{loadvfcsv}}, \code{\link{loadvfxml}} }
 
-\examples{
-# DO NOT RUN
-#filename <- # Add the file name with the XML files to load
-#vf       <- loadvfxmlbatch( filename = filename, patternMap = saplocmap$p24d2 )
-}
-
 \author{Ivan Marin-Franch}

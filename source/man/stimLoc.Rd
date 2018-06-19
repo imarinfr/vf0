@@ -17,7 +17,7 @@
 \seealso{\code{\link{saplocmap}}}
 
 \examples{
-stimLoc( "sap", "p24d2", "OD" )
+  stimLoc( "sap", "p24d2", "OD" )
 }
 
 \author{Ivan Marin-Franch}

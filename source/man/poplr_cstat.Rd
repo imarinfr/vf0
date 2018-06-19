@@ -21,7 +21,7 @@
 }
 
 \examples{
-res <- poplr( vf91016right )
+  res <- poplr( vf91016right )
 }
 
 \author{Ivan Marin-Franch}

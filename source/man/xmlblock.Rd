@@ -12,9 +12,4 @@
 
 \seealso{\code{\link{loadvfxml}}, \code{\link{loadvfcsv}}, \code{\link{xmlitem}}}
 
-\examples{
-# DO NOT RUN
-#xmlblock( tag, xmllines )
-}
-
 \author{Ivan Marin-Franch}

@@ -15,7 +15,7 @@ Data frame with the (x,y) Cartesian coordinates
 \seealso{\code{\link{cart2jpolar}}}
 
 \examples{
-jpolar2cart( cart2jpolar( data.frame( x = c( 0, 10 ), y = c( 0, 10 ) ) ) )
+  jpolar2cart( cart2jpolar( data.frame( x = c( 0, 10 ), y = c( 0, 10 ) ) ) )
 }
 
 \author{Ivan Marin-Franch}

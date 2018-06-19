@@ -30,9 +30,4 @@ percentiles for each location
 
 \seealso{ \code{\link{gloperc}} }
 
-\examples{
-# DO NOT RUN
-# lperc <- locper()
-}
-
 \author{Ivan Marin-Franch}

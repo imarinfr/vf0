@@ -13,10 +13,4 @@
 
 \seealso{\code{\link{ageLinearModel}}}
 
-\examples{
-# DO NOT RUN
-# to test this, load a file using e.g. loadvfcsv with control data and then run
-# agelm <- ageLinearModel( vf )
-}
-
 \author{Ivan Marin-Franch}

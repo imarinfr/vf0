@@ -16,7 +16,7 @@ returns the subselected visits per subject. For those subject for which at least
 }
 
 \examples{
-vfselectvisit( vf91016left )
+  vfselectvisit( vf91016left )
 }
 
 \author{Ivan Marin-Franch}

@@ -31,7 +31,9 @@
 }
 
 \examples{
-#vflayout_poplr( vf91016right )
+  \donttest{
+    vflayout_poplr( vf91016right )
+  }
 }
 
 \author{Ivan Marin-Franch, Chaitanya Khadilkar}

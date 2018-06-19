@@ -16,8 +16,9 @@
 \seealso{\code{\link{vflayout2}}, \code{\link{vfplot2}}, \code{\link{vfplotloc2}}}
 
 \examples{
-# show a printout
-#vflayout2ghr( vf91016right[15,] )
+  \donttest{
+    vflayout2ghr( vf91016right[15,] )
+  }
 }
 
 \author{Ivan Marin-Franch}

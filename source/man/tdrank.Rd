@@ -11,8 +11,8 @@
 \seealso{ \code{\link{tdrankperc}} }
 
 \examples{
-td <- tdval( vf91016right )
-tdr <- tdrank( td  )
+  td <- tdval( vf91016right )
+  tdr <- tdrank( td  )
 }
 
 \author{Ivan Marin-Franch}

@@ -39,9 +39,4 @@
 
 \seealso{\code{\link{vfplot2}}}
 
-\examples{
-# DO NOT EXECUTE
-#vfplotloc2( vals )
-}
-
 \author{Chaitanya Khadilkar, Ivan Marin-Franch}

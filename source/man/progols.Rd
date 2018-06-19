@@ -17,8 +17,8 @@
 }
 
 \examples{
-vfi <- vfindex( vf91016right )
-progols( vfi$tdate, vfi$mvfi, ylab = "vfi" )
+  vfi <- vfindex( vf91016right )
+  progols( vfi$tdate, vfi$mvfi, ylab = "vfi" )
 }
 
 \author{Ivan Marin-Franch}

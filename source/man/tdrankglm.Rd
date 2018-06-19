@@ -11,20 +11,12 @@
   \item{rankCentral}{central ranked positions to use in the fit. By default it is \code{NULL}, so that all rank locations are used for the fit}
   \item{scaleFactor}{scale to use for ranks to make them be between 0 and 1. Default is \code{52.4}}
 }
-\details{details?}
+\details{details}
 
 \value{
 fitted values of the generalized linear model fit for TD rank curve
 }
 
-\references{
-References?
-}
-
 \seealso{ \code{\link{tdrank}}, \code{\link{tdrankperc}} }
-
-\examples{
-#tdrankglm()
-}
 
 \author{Ivan Marin-Franch}

@@ -17,8 +17,8 @@ gets the general height estimated as the rankRef-th ranked TD location
 \seealso{\code{\link{pdval}}}
 
 \examples{
-td <- tdval( vf91016right[15,] )
-ghseventh <- ghpostd( td )
+  td <- tdval( vf91016right[15,] )
+  ghseventh <- ghpostd( td )
 }
 
 \author{Ivan Marin-Franch}

@@ -22,7 +22,7 @@ it generates a graph with the color legend for p-values in td and pd probability
 \seealso{\code{\link{vfcolormap}}}
 
 \examples{
-colormapgraph()
+  colormapgraph()
 }
 
 \author{Ivan Marin-Franch}

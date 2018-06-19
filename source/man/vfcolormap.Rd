@@ -10,9 +10,4 @@
 
 \seealso{\code{\link{vfplot}}, \code{\link{vfgrayscale}}}
 
-\examples{
-# DO NOT EXECUTE
-#vfcolormap( map )
-}
-
 \author{Chaitanya Khadilkar, Ivan Marin-Franch}

@@ -15,7 +15,7 @@ sets normative values and stimuli location map to be used with visualFields
 \seealso{ \code{\link{getnv}} }
 
 \examples{
-setnv()
+  setnv()
 }
 
 \author{Ivan Marin-Franch}

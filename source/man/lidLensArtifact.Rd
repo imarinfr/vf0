@@ -14,9 +14,4 @@ it returns a list of indices of visual fields in \code{\link{vf}} that may have 
 
 \seealso{ \code{\link{filterReliability}} }
 
-\examples{
-# DO NOT EXECUTE
-#idx <- lidLensArtifact( vf )
-}
-
 \author{Ivan Marin-Franch}
