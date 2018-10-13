@@ -118,5 +118,7 @@ vfplot_poplr <- function( sl, pval, vfinfo, newWindow = FALSE,
              xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
              txtfont = txtfont, pointsize = pointsize,
              showaxis = showaxis, colaxis = colaxis )
-
+  # add horizontal and vertical midlines
+  axis( 1, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( xmin, xmax ), col = "black" )
+  axis( 2, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( ymin, ymax ), col = "black" )
 }
