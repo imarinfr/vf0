@@ -248,3 +248,6 @@ Many edits, including the addition of Artes data from
 [1] P. H. Artes, N. O?Leary, M. T. Nicolela, B. C. Chauhan, and D. P. Crabb. Visual field progression in glaucoma: What is the specificity of the guided progression analysis? American Academy of Ophthalmology, 121(10):2023-2027, 2014.
 
 Also added a function to load data extracted from the Octopus device
+
+v0.5.5 12/11/2018
+Final entry to this news file since now we use GITHUB to manage versions. In this version, the v2 display functions (vplot2, etc) have been removed and some other files for PoPLR visualization have been upgraded an improved.
