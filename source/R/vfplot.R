@@ -2,7 +2,7 @@ vfplot <- function( vf, plotType,
                     xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
                     notSeenAsBlack = TRUE, newWindow = FALSE,
                     txtfont = "sans", pointsize = 10, width = 6,
-                    showaxis = FALSE, colaxis = "white" ) {
+                    showaxis = TRUE, colaxis = "black" ) {
 
   # check that vf has only 1 entry
   if( nrow( vf ) > 1 ) {
@@ -138,7 +138,7 @@ vfplot <- function( vf, plotType,
              txtfont = txtfont, pointsize = pointsize,
              showaxis = showaxis, colaxis = colaxis )
   # add horizontal and vertical midlines
-  axis( 1, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( xmin, xmax ), col = "black" )
-  axis( 2, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( ymin, ymax ), col = "black" )
+  #axis( 1, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( xmin, xmax ), col = "black" )
+  #axis( 2, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( ymin, ymax ), col = "black" )
   
 }

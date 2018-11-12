@@ -1,15 +1,16 @@
 vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
-                            plotType = "vf", truncVal = 1,
-                            type = "slr", typecomb = "fisher",
+                            plotType = "vf", summaryIndex = "md",
+                            truncVal = 1, type = "slr", typecomb = "fisher",
                             pwidth = 8.27, pheight = 11.69,
                             margin = 0.25, filename = NULL,
-                            colorMapType = "pval", colorScale = NULL ) {
+                            colorMapType = "pval", colorScale = NULL,
+                            showaxis = TRUE, colaxis = "black" ) {
 
-##############
-# input checks
-##############
-# check that all rows in vf belong to the same subject, the same test, the same perimetry
-# testing and the same algorithm, and the same eye
+  ##############
+  # input checks
+  ##############
+  # check that all rows in vf belong to the same subject, the same test, the same perimetry
+  # testing and the same algorithm, and the same eye
   if( length( unique( vf$tperimetry ) ) > 1 |
       length( unique( vf$tpattern   ) ) > 1 |
       length( unique( vf$talgorithm ) ) > 1 |
@@ -18,15 +19,15 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
     stop( "all visual fields should belong to the same subject and eye tested with the same perimeter and algorithm on the same locations" )
   }
   if( nrow( vf ) < 2 * grp ) stop( "the number of visual fields needs to be at least twice the number of visual fields to group for the analysis" )
-  if( nrow( vf ) < 8 )       warning( "permutation analysis may not be very precise for less than 8 visual fields" )
-# types of color map and ring map
+  if( nrow( vf ) < 7 )       warning( "permutation analysis may not be precise for less than 7 visual fields" )
+  # types of color map and ring map
   if( is.null( colorMapType) ) stop( "colorMapType must be 'slope', 'pval', or 'blind'" )
   if( colorMapType != "pval" & colorMapType != "slope" & colorMapType  != "blind" ) stop( "wrong colorMapType. Must be 'slope', 'pval', or 'blind'" )
-# truncation must be between zero and one
+  # truncation must be between zero and one
   if( truncVal <= 0 | truncVal > 1 ) stop("truncation must be between 0 and 1")
 
-  txtfont   <- "serif"
-  pointsize <- 12
+  txtfont   <- "sans"
+  pointsize <- 10
   # special locations in the visual field: BS locations
   bsxy   <- NULL
   bsxy$x <- c( 15, 15)
@@ -40,10 +41,10 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   texteval <- "vfsettings$locini"
   locini   <- eval( parse( text = texteval ) )
 
-# get settings for the pattern of test locations
+  # get settings for the pattern of test locations
   texteval <- paste( "vfsettings$", vf$tpattern[1], sep = "" )
   settings <- eval( parse( text = texteval ) )
-# get x and y locations
+  # get x and y locations
   texteval <- paste( vf$tperimetry[1], "locmap$",  vf$tpattern[1], sep = "" )
   patternMap <- eval( parse( text = texteval ) )
   patternMap <- patternMap[,c( "xod", "yod" )]
@@ -69,23 +70,22 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
     colorScale         <- as.data.frame( colorScale )
   }
 
-######################
-# analysis
-######################
-# get global indices
+  ######################
+  # analysis
+  ######################
+  # get global indices
   vfindices <- vfstats( vf )
   
-# get poplr analysis
+  # get poplr analysis
   if( plotType == "vf" )    vals <- vf
   if( plotType == "td" )    vals <- tdval( vf )
   if( plotType == "pd" )    vals <- pdval( tdval( vf ) )
   if( plotType == "pdghr" ) vals <- pdvalghr( tdval( vf ) )
   pres <- poplr( vals, nperm = nperm, type = type, truncVal = truncVal, typecomb = typecomb )
-# init
+  # init
   vfinfo0 <- vf[1,1:( locini - 1 )]
   vfinfo1 <- vf[1,1:( locini - 1 )]
   # get indices for averages
-  locvalsidx <- locini:( locini + settings$locnum - length( settings$bs ) - 1 )
   idx0 <- c( 1:grp )
   idx1 <- c( ( nrow( vf ) - grp + 1 ):nrow( vf ) )
   # Initialize to 1 
@@ -108,22 +108,24 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   if( length( idx ) > 0 ) vfinfo0$sbsy <- mean( vf$sbsy[idx0[idx]] )
   if( length( idx ) == 0 ) vfinfo0$sbsy <- 0
 
-# get all x values of blind spot locations from the last n exams that are not zero
-# compute a mean on the set of locations obtained  
+  # get all x values of blind spot locations from the last n exams that are not zero
+  # compute a mean on the set of locations obtained  
   idx <- which( vf$sbsx[idx1] != 0 )
   if( length( idx ) > 0 ) vfinfo1$sbsx <- mean( vf$sbsx[idx1[idx]] )
   if( length( idx ) == 0 ) vfinfo1$sbsx <- 0
 
-# get all x values of blind spot locations from the last n exams that are not zero
-# compute a mean on the set of locations obtained  
+  # get all x values of blind spot locations from the last n exams that are not zero
+  # compute a mean on the set of locations obtained  
   idx <- which( vf$sbsy[idx1] != 0 )
   if( length( idx ) > 0 ) vfinfo1$sbsy <- mean( vf$sbsy[idx1[idx]] )
   if( length( idx ) == 0 ) vfinfo1$sbsy <- 0
   vfinfo0$sage <- mean( vf$sage[idx0] )
   vfinfo1$sage <- mean( vf$sage[idx1] )
-  vf0          <- round( colMeans( vf[idx0, locvalsidx] ) )
-  vf1          <- round( colMeans( vf[idx1, locvalsidx] ) )
-# open window wiht A4 page
+  locvalsidx   <- locini:( locini + settings$locnum - 1 )
+  vf0          <- colMeans( vf[idx0, locvalsidx] )
+  vf1          <- colMeans( vf[idx1, locvalsidx] )
+
+  # open window wiht A4 page
   if( is.null( filename ) ) {
     device <- options( "device" )
     if( .Platform$OS.type == "unix" ) {
@@ -137,18 +139,17 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
     } else{
       options( device = "windows" )
       dev.new( width = pwidth, height = pheight, rescale = "fixed" )
-#      windows( xpos = 0, ypos = 0, width = pwidth, height = pheight, rescale = "fixed" )
     }
     options( device = device )
   } else {
     pdf( width = pwidth, height = pheight, file = filename )
   }
 
-# define the margins
+  # define the margins
   mwidth  <- pwidth  - 2 * margin
   mheight <- pheight - 2 * margin
   
-# create the layout of the printout
+  # create the layout of the printout
   printout <- createviewport( "printout", left = margin, top = margin, height = mheight, width = mwidth )
 
   xrange <- max( patternMap$xod ) - min( patternMap$xod )
@@ -191,50 +192,71 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   ######################################################
   # first plot all graphs
   ######################################################
-# sensitivity plot first n visits
+  # sensitivity plot first n visits
   opar <- par( no.readonly = TRUE )
-  par( fig = c( 0.00, 0.50, 0.50, 1.00 ) )
-  vf0[which( vf0 < 0 )] <- "<0"
-  vfplotloc( vf0, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = color0 )
-# sensitivity plot last n visits
+  par( fig = c( 0.10, 0.45, 0.60, 0.90 ) )
+  vftxt <- round( vf0 )
+  vftxt[which( vftxt < 0 )] <- "<0"
+  vfplotloc( vftxt, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = color0,
+             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = 5,
+             showaxis = showaxis, colaxis = colaxis )
+  # sensitivity plot last n visits
   par( new = TRUE )
-  par( fig = c( 0.50, 1.00, 0.50, 1.00 ) )
-  vf1[which( vf1 < 0 )] <- "<0"
-  vfplotloc( vf1, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = color1 )
-  # PoPLR plot
+  par( fig = c( 0.50, 0.85, 0.60, 0.90 ) )
+  vftxt[which( vf1 < 0 )] <- "<0"
+  vftxt[which( vftxt < 0 )] <- "<0"
+  vfplotloc( vftxt, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = color1,
+             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = 5,
+             showaxis = showaxis, colaxis = colaxis )
+  # LEGO plot
   par( new = TRUE )
-  par( fig = c( 0.25, 0.75, 0.15, 0.65 ) )
-  vfplot_poplr( pres$sl, pres$pval, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale )
-# plot permutation histogram
+  par( fig = c( 0.10, 0.45, 0.30, 0.60 ) )
+  vftxt <- round( vf1 - vf0, 1 ) # IMF: Paul, need to decide what to do with sensitivities <0. Let's talk
+  vfplot_legoplot( vftxt, patternMap = patternMap, vftiles = vftiles, vfhull = vfhull,
+                   loccolout = color0, loccolin = color1, radius = 2.25, # radius is the radius in same units as x-axis (degrees of visual angle) of the circle
+                   xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = 5,
+                   showaxis = showaxis, colaxis = colaxis )
+  # PLR plot
   par( new = TRUE )
-  par( fig = c( 0.02, 0.40, 0.015, 0.20 ) )
+  par( fig = c( 0.50, 0.85, 0.30, 0.60 ) )
+  vfplot_plr( pres$sl, pres$pval, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale, pointsize = 5,
+              showaxis = showaxis, colaxis = colaxis )
+  vfplot_sparklines( vf, patternMap, col = "black" )
+  # plot permutation histogram
+  par( new = TRUE )
+  par( fig = c( 0.10, 0.48, 0.055, 0.25 ) )
   hist_poplr( pres$scomb_obs, pres$pcomb_obs, pres$scomb )
-# plot md on age
+  # plot md on age
   par( new = TRUE )
-  par( fig = c( 0.65, 0.97, 0.015, 0.20 ) )
-  # regression analysis
-  progols( vfindices$tdate, vfindices$mtdev )
-# color-code map
+  par( fig = c( 0.55, 0.85, 0.055, 0.25 ) )
+  if ( summaryIndex == "md" ) {
+    progols( vfindices$tdate, vfindices$mtdev )                  # regression analysis
+  } else if ( summaryIndex == "ms" ) {
+    progols( vfindices$tdate, vfindices$msens, ylab = "ms, dB" ) # regression analysis
+  }
+  # color-code map
   if( colorMapType == "slope" ) colorScale$cutoffs <- 10 * colorScale$cutoffs
   par( new = TRUE )
-  par( fig = c( 0.82, 0.97, 0.23, 0.32 ) )
-  colormapgraph( ncol = 3, mapval = colorScale )
+  par( fig = c( 0.55, 0.85, 0.25, 0.36 ) )
+  colormapgraph( ncol = 5, mapval = colorScale, notSeenAsBlack = FALSE )
   par( opar )
-######################################################
-# create the text elements in the printouts
-######################################################
-# The two above are to delete once the graphs are generated!!!
-  mainInfo      <- createviewport( "mainInfo",      left =  0.00, top =  0.00, width = 4.75, height = 0.40, pheight = mheight, pwidth = mwidth )
-  infobox2      <- createviewport( "infobox2",      left =  6.40, top =  0.00, width = 1.40, height = 0.40, pheight = mheight, pwidth = mwidth )
+
+  ######################################################
+  # create the text elements in the printouts
+  ######################################################
+  # The two above are to delete once the graphs are generated!!!
+  mainInfo      <- createviewport( "mainInfo",      left =  0.45, top =  0.00, width = 4.75, height = 0.40, pheight = mheight, pwidth = mwidth )
+  infobox2      <- createviewport( "infobox2",      left =  5.40, top =  0.00, width = 1.40, height = 0.40, pheight = mheight, pwidth = mwidth )
   infobox3      <- createviewport( "infobox3",      left =  3.40, top = 10.90, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textvisit0    <- createviewport( "textvisit0",    left =  1.20, top =  0.75, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textvisit1    <- createviewport( "textvisit1",    left =  5.20, top =  0.75, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textpoplar    <- createviewport( "textpoplar",    left =  3.20, top =  4.50, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  texthistogram <- createviewport( "texthistogram", left =  1.00, top =  8.90, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textmdprogols <- createviewport( "textmdprogols", left =  6.50, top =  8.90, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textvisit0    <- createviewport( "textvisit0",    left =  1.50, top =  1.05, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textvisit1    <- createviewport( "textvisit1",    left =  4.90, top =  1.05, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textlego      <- createviewport( "textlego",      left =  1.50, top =  4.55, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textpoplar    <- createviewport( "textpoplar",    left =  4.90, top =  4.55, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  texthistogram <- createviewport( "texthistogram", left =  1.50, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textmdprogols <- createviewport( "textmdprogols", left =  4.90, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
   
-# create the list and then generate the tree and "push" it
-  list <- vpList( mainInfo, infobox2, infobox3, textvisit0, textvisit1, textpoplar, texthistogram, textmdprogols )
+  # create the list and then generate the tree and "push" it
+  list <- vpList( mainInfo, infobox2, infobox3, textvisit0, textvisit1, textlego, textpoplar, texthistogram, textmdprogols )
   tree <- vpTree( printout, list )
   
   pushViewport( tree )
@@ -314,36 +336,39 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   if( grp == 1 ) text <- "last exam"
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
   
-######################################################
-# Text for PoPLR plot
-######################################################
-  seekViewport( "textpoplar" )
-  if( plotType == "vf"    ) text <- "PoPLR analysis sensitivities"
-  if( plotType == "td"    ) text <- "PoPLR analysis TD" 
-  if( plotType == "pd"    ) text <- "PoPLR analysis PD"
-  if( plotType == "pdghr" ) text <- "PoPLR analysis PDr"
-  
+  ######################################################
+  # Text for Lego-plot and PoPLR plot
+  ######################################################
+  seekViewport( "textlego" )
+  text <- "legoplot"
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
   
-######################################################
-# Text for permutation histogram
-######################################################
+  seekViewport( "textpoplar" )
+  if( plotType == "vf" )    text <- "PLR slope (sensitivity)"
+  if( plotType == "td" )    text <- "PLR slope (total dev)"
+  if( plotType == "pd" )    text <- "PLR slope (pattern dev)"
+  if( plotType == "pdghr" ) text <- "PLR slope (rank pattern dev)"
+  grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
+  
+  ######################################################
+  # Text for permutation histogram
+  ######################################################
   seekViewport( "texthistogram" )
   
   text <- paste( "permutation histogram", sep = "" )
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
-
-######################################################
-# Text for permutation histogram
-######################################################
+  
+  ######################################################
+  # Text for permutation histogram
+  ######################################################
   seekViewport( "textmdprogols" )
   
   text <- paste( "mean deviation", sep = "" )
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
-
-######################################################
-# Details about printouts
-######################################################
+  
+  ######################################################
+  # Details about printouts
+  ######################################################
   seekViewport( "infobox3" )
   
   text <- paste( "norm vals: ", nv$nvname, sep = "" )

@@ -1,12 +1,12 @@
-\name{vfplot_poplr}
-\alias{vfplot_poplr}
-\title{plot with the PoPLR analysis}
+\name{vfplot_plr}
+\alias{vfplot_plr}
+\title{plot with the PLR analysis}
 \description{plots the slope values and the corresponding probabiliby category for each location}
-\usage{vfplot_poplr( sl, pval, vfinfo, newWindow = FALSE,
-                     xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
-                     colorMapType = "pval", colorScale = NULL,
-                     txtfont = "sans", pointsize = 10, width = 6,
-                     showaxis = FALSE, colaxis = "white" )}
+\usage{vfplot_plr( sl, pval, vfinfo, newWindow = FALSE,
+                   xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
+                   colorMapType = "pval", colorScale = NULL,
+                   txtfont = "sans", pointsize = 10, width = 6,
+                   showaxis = TRUE, colaxis = "black" )}
 \arguments{
   \item{sl}{slopes}
   \item{pval}{pvalues calculated for the slope}
@@ -18,9 +18,8 @@
   \item{txtfont}{font of the text with visual-sensitivity values. Default is \code{sans}}
   \item{pointsize}{size of the text with visual-sensitivity values. Default is \code{10}}
   \item{width}{width of the window. height is calucated using the width, xminmax and yminmax}
-  \item{showaxis}{Whether to show axis or not. Default is \code{FALSE}}
-  \item{colaxis}{Color of the axis to show, if \code{showaxis} is \code{TRUE}. Default is \code{white}}
-
+  \item{showaxis}{Whether to show axis or not. Default is \code{TRUE}}
+  \item{colaxis}{Color of the axis to show, if \code{showaxis} is \code{TRUE}. Default is \code{black}}
 }
 \details{The vfplot function operates on a single row of visual fileds (vf). Depending on the plot type it will generate a plot representing the sensitivity at each location. The  color scheme elucidates the degree of sensitivity at that location. Locations with zero sensitivity are shown in black. Blind spots have been excluded fronm the plot}
 
@@ -32,7 +31,7 @@
 
 \examples{
   res <- poplr( vf91016right )
-  vfplot_poplr( res$sl, res$pval, res$vfdata )
+  vfplot_plr( res$sl, res$pval, res$vfdata )
 }
 
-\author{Ivan Marin-Franch, Chaitanya Khadilkar}
+\author{Ivan Marin-Franch, Paul H Artes, Chaitanya Khadilkar}

@@ -6,7 +6,7 @@
                xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
                notSeenAsBlack = TRUE, newWindow = FALSE,
                txtfont = "sans", pointsize = 10, width = 6,
-               showaxis = FALSE, colaxis = "white" )}
+               showaxis = TRUE, colaxis = "black" )}
 \arguments{
   \item{vf}{\code{\link{vf}}-object with sensitivity thresholds, or TD or PD values}
   \item{plotType}{Type of plot to show. It can be visual sensitivities (\code{vf}), total-deviation values (\code{td}), or pattern-deviation values (\code{pd})}
@@ -16,8 +16,8 @@
   \item{txtfont}{font face of the text with visual-sensitivity values. Default is \code{sans}}
   \item{pointsize}{size of the text with visual-sensitivity values. Default is \code{10}}
   \item{width}{width of the window. height is calculated using the width, xmin, xmax, ymin, and ymax. Default is \code{6}}
-  \item{showaxis}{Whether to show axis or not. Default is \code{FALSE}}
-  \item{colaxis}{Color of the axis to show, if \code{showaxis} is \code{TRUE}. Default is \code{white}}
+  \item{showaxis}{Whether to show axis or not. Default is \code{TRUE}}
+  \item{colaxis}{Color of the axis to show, if \code{showaxis} is \code{TRUE}. Default is \code{black}}
 }
 \details{This function 
 The vfplot function operates on a single row of visual fileds (vf). Depending on the plot type it will generate a plot representing the sensitivity at each location. The  color scheme elucidates the degree of sensitivity at that location. Locations with zero sensitivity are shown in black. Blind spots have been excluded fronm the plot}

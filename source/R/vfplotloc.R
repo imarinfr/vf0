@@ -1,7 +1,7 @@
 vfplotloc <- function( vals, patternMap, vftiles, vfhull, loccol,
-                       xmin = -29, xmax = 29, ymin = -29, ymax = 29,
+                       xmin, xmax, ymin, ymax,
                        txtfont = "sans", pointsize = 10,
-                       showaxis = FALSE, colaxis = "white" ) {
+                       showaxis = TRUE, colaxis = "black" ) {
 
 # init
   oplt    <- par()$plt
@@ -12,7 +12,6 @@ vfplotloc <- function( vals, patternMap, vftiles, vfhull, loccol,
   par( family = txtfont )
 
   plot( patternMap$xod, patternMap$yod, type = "n", axes = FALSE, xlab = "", ylab = "", asp = 1, xlim = c( xmin, xmax ), ylim = c( ymin, ymax ) )
-  # plot VF values
   plot( vftiles, clipp = vfhull, add = TRUE, close = TRUE, showpoints = FALSE, border = "darkgray", fillcol = rgb( loccol ) )
   if( showaxis ) {
     axis( 1, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( xmin, xmax ), col = colaxis )
@@ -23,8 +22,8 @@ vfplotloc <- function( vals, patternMap, vftiles, vfhull, loccol,
     patternMap <- patternMap[-idx,]
     vals       <- vals[-idx]
   }
-  coltxt <- rep( "black", length( patternMap$xod ) )
-  coltxt[( loccol$red + loccol$green + loccol$blue ) / 3 < 0.25] <- "white"
+  coltxt <- rep( "grey10", length( patternMap$xod ) )
+  coltxt[( loccol$red + loccol$green + loccol$blue ) / 3 < 0.3] <- "grey90"
   text( patternMap$xod, patternMap$yod, vals, col = coltxt )
   par( plt    = oplt )
   par( ps     = ops )

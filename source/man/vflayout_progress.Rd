@@ -5,7 +5,8 @@
 \usage{vflayout_progress( vf, plotType, grp = 2, nperm = 5000,
                           colorMapType = "pval", colorScale = NULL,
                           filename = NULL,
-                          pwidth = 8.27, pheight = 11.69, margin = 0.25 )}
+                          pwidth = 8.27, pheight = 11.69, margin = 0.25,
+                          showaxis = TRUE, colaxis = "black" )}
 \arguments{
   \item{vf}{\code{\link{vf}} object with threshold sensitivities, td, or pd values}
   \item{plotType}{Type of plot to show. It can be visual sensitivities (\code{vf}), total-deviation values (\code{td}), or pattern-deviation values (\code{pd})}
@@ -17,6 +18,8 @@
   \item{pwidth}{width of the page (in inches). Default is \code{8.27}}
   \item{pheight}{height of the page (in inches). Default is \code{11.69}}
   \item{margin}{margins of the page (in inches). Default is \code{0.25}}
+  \item{showaxis}{Whether to show axis or not. Default is \code{TRUE}}
+  \item{colaxis}{Color of the axis to show, if \code{showaxis} is \code{TRUE}. Default is \code{black}}
 }
 
 \seealso{\code{\link{vflayout}}, \code{\link{vflayout_poplr}}}
