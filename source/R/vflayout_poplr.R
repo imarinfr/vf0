@@ -6,6 +6,10 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
                             colorMapType = "pval", colorScale = NULL,
                             showaxis = FALSE, colaxis = "black" ) {
 
+  txtfont   <- "sans"
+  pointsize <- 10
+  txtsize   <- 6
+
   ##############
   # input checks
   ##############
@@ -28,8 +32,6 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   # truncation must be between zero and one
   if( truncVal <= 0 | truncVal > 1 ) stop("truncation must be between 0 and 1")
 
-  txtfont   <- "sans"
-  pointsize <- 10
   # special locations in the visual field: BS locations
   bsxy   <- NULL
   bsxy$x <- c( 15, 15)
@@ -210,7 +212,7 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   vftxt <- round( vf0 )
   vftxt[which( vftxt < 0 )] <- "<0"
   vfplotloc( vftxt, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = color0,
-             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = 5,
+             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = txtsize,
              showaxis = showaxis, colaxis = colaxis )
   # sensitivity plot last n visits
   par( new = TRUE )
@@ -218,7 +220,7 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   vftxt[which( vf1 < 0 )] <- "<0"
   vftxt[which( vftxt < 0 )] <- "<0"
   vfplotloc( vftxt, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = color1,
-             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = 5,
+             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = txtsize,
              showaxis = showaxis, colaxis = colaxis )
   # LEGO plot
   par( new = TRUE )
@@ -226,19 +228,19 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   vftxt <- round( vf1 - vf0, 1 ) # IMF: Paul, need to decide what to do with sensitivities <0. Let's talk
   vfplot_legoplot( vftxt, patternMap = patternMap, vftiles = vftiles, vfhull = vfhull,
                    loccolout = color0, loccolin = color1, radius = 2.25, # radius is the radius in same units as x-axis (degrees of visual angle) of the circle
-                   xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = 5,
+                   xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = txtsize,
                    showaxis = showaxis, colaxis = colaxis )
   # PLR plot
   par( new = TRUE )
   par( fig = c( 0.50, 0.85, 0.30, 0.60 ) )
-  vfplot_plr( pres$sl, pres$pval, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale, pointsize = 5,
+  vfplot_plr( pres$sl, pres$pval, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale, pointsize = txtsize,
               showaxis = showaxis, colaxis = colaxis )
   vfplot_sparklines( vf, patternMap, col = "black" )
   # color-code map
   if( colorMapType == "slope" ) colorScale$cutoffs <- 10 * colorScale$cutoffs
   par( new = TRUE )
   par( fig = c( 0.86, 0.90, 0.37, 0.53 ) )
-  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.3, pointsize = 5, notSeenAsBlack = FALSE )
+  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.3, pointsize = txtsize, notSeenAsBlack = FALSE )
   # plot permutation histogram
   par( new = TRUE )
   par( fig = c( 0.10, 0.35, 0.07, 0.23 ) )
