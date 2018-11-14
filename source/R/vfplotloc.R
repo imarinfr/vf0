@@ -23,7 +23,7 @@ vfplotloc <- function( vals, patternMap, vftiles, vfhull, loccol,
     vals       <- vals[-idx]
   }
   coltxt <- rep( "grey10", length( patternMap$xod ) )
-  coltxt[( loccol$red + loccol$green + loccol$blue ) / 3 < 0.3] <- "white"
+  coltxt[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < 0.3] <- "white"
   text( patternMap$xod, patternMap$yod, vals, col = coltxt )
   par( plt    = oplt )
   par( ps     = ops )

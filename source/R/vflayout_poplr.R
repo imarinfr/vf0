@@ -237,8 +237,8 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   # color-code map
   if( colorMapType == "slope" ) colorScale$cutoffs <- 10 * colorScale$cutoffs
   par( new = TRUE )
-  par( fig = c( 0.86, 0.90, 0.38, 0.52 ) )
-  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.31, notSeenAsBlack = FALSE )
+  par( fig = c( 0.86, 0.90, 0.37, 0.53 ) )
+  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.3, pointsize = 5, notSeenAsBlack = FALSE )
   # plot permutation histogram
   par( new = TRUE )
   par( fig = c( 0.10, 0.35, 0.07, 0.23 ) )
