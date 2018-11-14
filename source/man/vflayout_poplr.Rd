@@ -3,18 +3,20 @@
 \title{layout displaying the PoPLR analysis}
 \description{the function performs the PoPLR analysis (see \code{\link{poplr}}) with default values and presents the results in form of a A4 printout}
 \usage{vflayout_poplr( vf, grp = 3, nperm = 5000,
-                      plotType = "vf", summaryIndex = "md", 
+                      plotType = "vf",
+                      summaryIndex1 = "md", summaryIndex2 = "gh",
                       truncVal = 1, type = "slr", typecomb = "fisher",
                       pwidth = 8.27, pheight = 11.69,
                       margin = 0.25, filename = NULL,
                       colorMapType = "pval", colorScale = NULL,
-                      showaxis = TRUE, colaxis = "black" )}
+                      showaxis = FALSE, colaxis = "black" )}
 \arguments{
   \item{vf}{\code{\link{vf}} object with threshold sensitivities, td, or pd values}
   \item{grp}{how many visual fields to group. Default is \code{3}}
   \item{nperm}{number of permutations. Default is \code{5000}}
   \item{plotType}{Type of plot to show. It can be visual sensitivities (\code{vf}), total-deviation values (\code{td}), or pattern-deviation values (\code{pd})}
-  \item{summaryIndex}{Which summary index to use for global progression analysis.}
+  \item{summaryIndex1}{Which summary index to use for the first global progression analysis. Default is \code{md}}
+  \item{summaryIndex2}{Which summary index to use for the second global progression analysis. Default is \code{gh}}
   \item{truncVal}{p-value cut-off for truncation. Default is \code{1}}
   \item{type}{Type of regression statistic: \code{slr} for simple linear regression and \code{rank} for Spearman correlation coefficient. Default is \code{slr}}
   \item{typecomb}{Combination type for p-values. Default is \code{fisher}}
@@ -24,7 +26,7 @@
   \item{filename}{file name to save the printout as pdf. If it is saved to pdf, it won't be displayed in the screen. Default is \code{NULL}.}
   \item{colorMapType}{what does color map categorizes. It can be \code{pvals}, \code{slopes}, or years \code{blind}. Default is \code{pvals}}
   \item{colorScale}{Color mapping to use. Default is \code{NULL}. A different default is given depending on \code{colorMapType}}
-  \item{showaxis}{Whether to show axis or not. Default is \code{TRUE}}
+  \item{showaxis}{Whether to show axis or not. Default is \code{FALSE}}
   \item{colaxis}{Color of the axis to show, if \code{showaxis} is \code{TRUE}. Default is \code{black}}
 }
 

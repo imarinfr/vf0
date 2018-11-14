@@ -1,6 +1,6 @@
 colormapgraph <- function( ncol = 3, mapval = NULL, notSeenAsBlack = TRUE,
                            txtfont = "sans", pointsize = 10,
-                           outerSymbol = "circle", outerSize = 1, outerInch = 0.18 ) {
+                           symbol = "circle", size = 1, inch = 0.18 ) {
 
   if( is.null( mapval ) ) {
     texteval <- "vfenv$nv$pmapsettings"
@@ -56,8 +56,8 @@ colormapgraph <- function( ncol = 3, mapval = NULL, notSeenAsBlack = TRUE,
 
 # legend
   plot( coords$x, coords$y, type = "n", axes = FALSE, xlab = "", ylab = "", xlim = c( xmin, xmax ), ylim = c( ymin, ymax ) )
-  outerDimensions <- t( matrix( data = rep( outerSize, nrow( coords ) ),nrow = length( outerSize ), ncol = nrow( coords ) ) )
-  evaltxt <- paste( "symbols( coords$x, coords$y, " , outerSymbol, " = outerDimensions, add = TRUE, inches = outerInch, bg = colval, fg = colval, lwd = 1 )", sep = "" )
+  dimensions <- t( matrix( data = rep( size, nrow( coords ) ),nrow = length( size ), ncol = nrow( coords ) ) )
+  evaltxt <- paste( "symbols( coords$x, coords$y, " , symbol, " = dimensions, add = TRUE, inches = inch, bg = colval, fg = colval, lwd = 1 )", sep = "" )
   eval( parse( text = evaltxt ) )
 
   coltxt <- rep( "black", length( coords$x ) )

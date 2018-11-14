@@ -20,14 +20,17 @@ hist_poplr <- function( scomb_obs, pcomb_obs, scomb, nLoc = 52, txtfont = "sans"
 
   par( ps     = pointsize )
   par( family = txtfont )
-  par( plt    = c( 0, 1, 0.3, 1 ) )
+  par( plt = c( 0, 1.0, 0.3, 1 ) )
+  par( mgp = c( 1.85, 0.5, 0 ) )
 
-  hist( scomb, breaks = breaks, freq = FALSE, main = "", xlim = c( 0, 6 ), ylim = c( 0, 1.5 ), xlab = "", border = rgb( 0.7, 0.7, 0.7 ), col = rgb( 0.9, 0.9, 0.9 ), axes = FALSE )
-  title( xlab = "S / number of locations n", mgp = c( 2, 1, 0 ) )
-  lines( c( scomb_obs, scomb_obs ), c( 0, 1.1 ), col = "red" )
-  points( c( scomb_obs ), 1.1, pch = 21, col = "red", bg = "red" )
-  text( c( scomb_obs ), 1.2, labels = paste( scomb_txt, pcomb_txt ), adj = adj )
-
+  ymax <- max( hist( scomb, breaks = breaks, plot = FALSE )$density )
+  hist( scomb, breaks = breaks, freq = FALSE, main = "", xlim = c( 0, 6 ), ylim = c( 0, ymax ), xlab = "", ylab = "", border = rgb( 0.7, 0.7, 0.7 ), col = rgb( 0.9, 0.9, 0.9 ), axes = FALSE, ann = FALSE )
+  axis( 1, tcl = -0.3, lwd = 0.5, lwd.ticks = 0.5 )
+  lines( c( scomb_obs, scomb_obs ), 0.8 * c( 0, ymax ), col = "red" )
+  points( c( scomb_obs ), 0.8 * ymax, pch = 21, col = "red", bg = "red" )
+  text( c( scomb_obs ), 0.9 * ymax, labels = paste( scomb_txt, pcomb_txt ), adj = adj )
+  title( xlab = "S / number of locations n" )
+  
   par( ps     = ops )
   par( family = ofamily )
   par( plt    = oplt )

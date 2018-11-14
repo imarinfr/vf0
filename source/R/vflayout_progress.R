@@ -2,7 +2,7 @@ vflayout_progress <- function( vf, plotType, grp = 2, nperm = 5000,
                                colorMapType = "pval", colorScale = NULL,
                                filename = NULL,
                                pwidth = 8.27, pheight = 11.69, margin = 0.25,
-                               showaxis = TRUE, colaxis = "black" ) {
+                               showaxis = FALSE, colaxis = "black" ) {
 
   ##############
   # input checks

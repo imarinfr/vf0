@@ -1,5 +1,5 @@
 vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, filename = NULL,
-                         showaxis = TRUE, colaxis = "black" ) {
+                         showaxis = FALSE, colaxis = "black" ) {
   
   if( nrow( vf ) > 1 ) {
     stop("Error! vf cannot have more than 1 rows")

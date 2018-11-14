@@ -1,10 +1,10 @@
 vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
-                            plotType = "vf", summaryIndex = "md",
+                            plotType = "vf", summaryIndex1 = "md", summaryIndex2 = "gh",
                             truncVal = 1, type = "slr", typecomb = "fisher",
                             pwidth = 8.27, pheight = 11.69,
                             margin = 0.25, filename = NULL,
                             colorMapType = "pval", colorScale = NULL,
-                            showaxis = TRUE, colaxis = "black" ) {
+                            showaxis = FALSE, colaxis = "black" ) {
 
   ##############
   # input checks
@@ -19,10 +19,12 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
     stop( "all visual fields should belong to the same subject and eye tested with the same perimeter and algorithm on the same locations" )
   }
   if( nrow( vf ) < 2 * grp ) stop( "the number of visual fields needs to be at least twice the number of visual fields to group for the analysis" )
-  if( nrow( vf ) < 7 )       warning( "permutation analysis may not be precise for less than 7 visual fields" )
+  if( nrow( vf ) < 7 )       warning( "permutation analysis may not be precise for fewer than 7 visual fields" )
   # types of color map and ring map
   if( is.null( colorMapType) ) stop( "colorMapType must be 'slope', 'pval', or 'blind'" )
   if( colorMapType != "pval" & colorMapType != "slope" & colorMapType  != "blind" ) stop( "wrong colorMapType. Must be 'slope', 'pval', or 'blind'" )
+  if( summaryIndex1 != "ms" & summaryIndex1 != "md" & summaryIndex1 != "gh" & summaryIndex1 != "ghr" ) stop( "wrong summary index. Must be 'ms', 'md', 'gh', 'ghr'" )
+  if( summaryIndex2 != "ms" & summaryIndex2 != "md" & summaryIndex2 != "gh" & summaryIndex2 != "ghr" ) stop( "wrong summary index. Must be 'ms', 'md', 'gh', 'ghr'" )
   # truncation must be between zero and one
   if( truncVal <= 0 | truncVal > 1 ) stop("truncation must be between 0 and 1")
 
@@ -73,14 +75,24 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   ######################
   # analysis
   ######################
+  # td and pd vals
+  td  <- tdval( vf )
+  pd  <- pdval( td )
   # get global indices
   vfindices <- vfstats( vf )
-  
+  if( summaryIndex1 == "gh"  | summaryIndex2 == "gh"  ) gh  <- ghpostd( td, correction = TRUE )
+  if( summaryIndex1 == "ghr" | summaryIndex2 == "ghr" ) {
+    ghr <- rep( NA, nrow( td ) )
+    for( i in 1:nrow( td ) ) {
+      ghr[i] <- ghranktd( td[i,] )$gh
+    }
+  }
+
   # get poplr analysis
   if( plotType == "vf" )    vals <- vf
-  if( plotType == "td" )    vals <- tdval( vf )
-  if( plotType == "pd" )    vals <- pdval( tdval( vf ) )
-  if( plotType == "pdghr" ) vals <- pdvalghr( tdval( vf ) )
+  if( plotType == "td" )    vals <- td
+  if( plotType == "pd" )    vals <- pd
+  if( plotType == "pdghr" ) vals <- pdvalghr( td )
   pres <- poplr( vals, nperm = nperm, type = type, truncVal = truncVal, typecomb = typecomb )
   # init
   vfinfo0 <- vf[1,1:( locini - 1 )]
@@ -222,45 +234,50 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   vfplot_plr( pres$sl, pres$pval, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale, pointsize = 5,
               showaxis = showaxis, colaxis = colaxis )
   vfplot_sparklines( vf, patternMap, col = "black" )
-  # plot permutation histogram
-  par( new = TRUE )
-  par( fig = c( 0.10, 0.48, 0.055, 0.25 ) )
-  hist_poplr( pres$scomb_obs, pres$pcomb_obs, pres$scomb )
-  # plot md on age
-  par( new = TRUE )
-  par( fig = c( 0.55, 0.85, 0.055, 0.25 ) )
-  if ( summaryIndex == "md" ) {
-    progols( vfindices$tdate, vfindices$mtdev )                  # regression analysis
-  } else if ( summaryIndex == "ms" ) {
-    progols( vfindices$tdate, vfindices$msens, ylab = "ms, dB" ) # regression analysis
-  }
   # color-code map
   if( colorMapType == "slope" ) colorScale$cutoffs <- 10 * colorScale$cutoffs
   par( new = TRUE )
-  par( fig = c( 0.55, 0.85, 0.25, 0.36 ) )
-  colormapgraph( ncol = 5, mapval = colorScale, notSeenAsBlack = FALSE )
+  par( fig = c( 0.86, 0.90, 0.38, 0.52 ) )
+  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.31, notSeenAsBlack = FALSE )
+  # plot permutation histogram
+  par( new = TRUE )
+  par( fig = c( 0.10, 0.35, 0.07, 0.23 ) )
+  hist_poplr( pres$scomb_obs, pres$pcomb_obs, pres$scomb )
+  # general index 1
+  par( new = TRUE )
+  par( fig = c( 0.375, 0.625, 0.07, 0.23 ) )
+  if ( summaryIndex1 == "md" )  progols( vfindices$tdate, vfindices$mtdev, projyears = 0, ylab = "md, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
+  if ( summaryIndex1 == "ms" )  progols( vfindices$tdate, vfindices$msens, projyears = 0, ylab = "ms, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
+  if ( summaryIndex1 == "gh" )  progols( vfindices$tdate, gh,              projyears = 0, ylab = "gh, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
+  if ( summaryIndex1 == "ghr" ) progols( vfindices$tdate, ghr,             projyears = 0, ylab = "ghr, dB", markfl = TRUE, prggrp = grp ) # regression analysis
+  # plot general height on age
+  par( new = TRUE )
+  par( fig = c( 0.65, 0.9, 0.07, 0.23 ) )
+  if ( summaryIndex2 == "md" )  progols( vfindices$tdate, vfindices$mtdev, projyears = 0, ylab = "md, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
+  if ( summaryIndex2 == "ms" )  progols( vfindices$tdate, vfindices$msens, projyears = 0, ylab = "ms, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
+  if ( summaryIndex2 == "gh" )  progols( vfindices$tdate, gh,              projyears = 0, ylab = "gh, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
+  if ( summaryIndex2 == "ghr" ) progols( vfindices$tdate, ghr,             projyears = 0, ylab = "ghr, dB", markfl = TRUE, prggrp = grp ) # regression analysis
   par( opar )
 
   ######################################################
   # create the text elements in the printouts
   ######################################################
   # The two above are to delete once the graphs are generated!!!
-  mainInfo      <- createviewport( "mainInfo",      left =  0.45, top =  0.00, width = 4.75, height = 0.40, pheight = mheight, pwidth = mwidth )
-  infobox2      <- createviewport( "infobox2",      left =  5.40, top =  0.00, width = 1.40, height = 0.40, pheight = mheight, pwidth = mwidth )
-  infobox3      <- createviewport( "infobox3",      left =  3.40, top = 10.90, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textvisit0    <- createviewport( "textvisit0",    left =  1.50, top =  1.05, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textvisit1    <- createviewport( "textvisit1",    left =  4.90, top =  1.05, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textlego      <- createviewport( "textlego",      left =  1.50, top =  4.55, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textpoplar    <- createviewport( "textpoplar",    left =  4.90, top =  4.55, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  texthistogram <- createviewport( "texthistogram", left =  1.50, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textmdprogols <- createviewport( "textmdprogols", left =  4.90, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
-  
+  mainInfo         <- createviewport( "mainInfo",          left =  0.45, top =  0.00, width = 4.75, height = 0.40, pheight = mheight, pwidth = mwidth )
+  infobox2         <- createviewport( "infobox2",          left =  5.40, top =  0.00, width = 1.40, height = 0.40, pheight = mheight, pwidth = mwidth )
+  infobox3         <- createviewport( "infobox3",          left =  3.40, top = 10.90, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textvisit0       <- createviewport( "textvisit0",        left =  1.50, top =  1.05, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textvisit1       <- createviewport( "textvisit1",        left =  4.90, top =  1.05, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textlego         <- createviewport( "textlego",          left =  1.50, top =  4.55, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textpoplar       <- createviewport( "textpoplar",        left =  4.90, top =  4.55, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
+  texthistogram    <- createviewport( "texthistogram",     left =  1.25, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textglobalindex1 <- createviewport( "textglobalindex1",  left =  3.50, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textglobalindex2 <- createviewport( "textglobalindex2",  left =  5.75, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
   # create the list and then generate the tree and "push" it
-  list <- vpList( mainInfo, infobox2, infobox3, textvisit0, textvisit1, textlego, textpoplar, texthistogram, textmdprogols )
+  list <- vpList( mainInfo, infobox2, infobox3, textvisit0, textvisit1, textlego, textpoplar, texthistogram, textglobalindex1, textglobalindex2 )
   tree <- vpTree( printout, list )
-  
   pushViewport( tree )
-  
+
   ######################################################
   # perimetry information
   ######################################################
@@ -295,7 +312,6 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   # Details about printouts
   ######################################################
   seekViewport( "infobox2" )
-  
   if( vfinfo0$tpattern == "p24d2" ) {
     textpattern <- "Central 24-2"
   } else if( vfinfo0$tpattern == "p30d2" ) {
@@ -317,7 +333,6 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   } else {
     textalgorithm <- "Unknown"
   }
-  
   text <- paste( textpattern, textalgorithm, sep = "\n" )
   grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
@@ -325,13 +340,11 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   # Details about first and last visits
   ######################################################
   seekViewport( "textvisit0" )
-  
   text <- paste( "first ", as.character( grp ), " exams", sep = "" )
   if( grp == 1 ) text <- "first exam"
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
-  
+
   seekViewport( "textvisit1" )
-  
   text <- paste( "last ", as.character( grp ), " exams", sep = "" )
   if( grp == 1 ) text <- "last exam"
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
@@ -342,30 +355,38 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   seekViewport( "textlego" )
   text <- "legoplot"
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
-  
+
   seekViewport( "textpoplar" )
   if( plotType == "vf" )    text <- "PLR slope (sensitivity)"
-  if( plotType == "td" )    text <- "PLR slope (total dev)"
-  if( plotType == "pd" )    text <- "PLR slope (pattern dev)"
-  if( plotType == "pdghr" ) text <- "PLR slope (rank pattern dev)"
+  if( plotType == "td" )    text <- "PLR slope (total deviation)"
+  if( plotType == "pd" )    text <- "PLR slope (pattern deviation)"
+  if( plotType == "pdghr" ) text <- "PLR slope (rank pattern deviation)"
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
-  
+
   ######################################################
   # Text for permutation histogram
   ######################################################
   seekViewport( "texthistogram" )
-  
   text <- paste( "permutation histogram", sep = "" )
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
-  
+
   ######################################################
-  # Text for permutation histogram
+  # Texts for global index plots
   ######################################################
-  seekViewport( "textmdprogols" )
-  
-  text <- paste( "mean deviation", sep = "" )
+  seekViewport( "textglobalindex1" )
+  if( summaryIndex1 == "ms")  text <- paste( "mean sensitivity", sep = "" )
+  if( summaryIndex1 == "md")  text <- paste( "mean deviation", sep = "" )
+  if( summaryIndex1 == "gh")  text <- paste( "general height", sep = "" )
+  if( summaryIndex1 == "ghr") text <- paste( "general height rank", sep = "" )
   grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
-  
+
+  seekViewport( "textglobalindex2" )
+  if( summaryIndex2 == "ms")  text <- paste( "mean sensitivity", sep = "" )
+  if( summaryIndex2 == "md")  text <- paste( "mean deviation", sep = "" )
+  if( summaryIndex2 == "gh")  text <- paste( "general height", sep = "" )
+  if( summaryIndex2 == "ghr") text <- paste( "general height rank", sep = "" )
+  grid.text( text, x = 0.50, y = 0.50, just = c( "center", "center" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
+
   ######################################################
   # Details about printouts
   ######################################################
