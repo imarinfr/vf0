@@ -2,6 +2,7 @@ hist_poplr <- function( scomb_obs, pcomb_obs, scomb, nLoc = 52, txtfont = "sans"
   sep <- 0.1
   scomb_obs <- scomb_obs / nLoc
   scomb     <- scomb / nLoc
+  scomb[scomb > 6] <- 6 # cap to a maximum S/n value of 6 (p-value with 6 decimal places)
   pcomb_txt <- paste0( "(p = ", round( pcomb_obs, 3 ), ")" )
   if( scomb_obs <= 6 ) {
     scomb_txt <- paste( "S / n = ", round( scomb_obs, 1 ) )
