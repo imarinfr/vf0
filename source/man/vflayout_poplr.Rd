@@ -5,7 +5,7 @@
 \usage{vflayout_poplr( vf, grp = 3, nperm = 5000,
                       plotType = "vf",
                       summaryIndex1 = "md", summaryIndex2 = "gh",
-                      truncVal = 1, type = "slr", typecomb = "fisher",
+                      ttail = "left", sltest = NULL, truncVal = 1,
                       pwidth = 8.27, pheight = 11.69,
                       margin = 0.25, filename = NULL,
                       colorMapType = "pval", colorScale = NULL,
@@ -17,9 +17,9 @@
   \item{plotType}{Type of plot to show. It can be visual sensitivities (\code{vf}), total-deviation values (\code{td}), or pattern-deviation values (\code{pd})}
   \item{summaryIndex1}{Which summary index to use for the first global progression analysis. Default is \code{md}}
   \item{summaryIndex2}{Which summary index to use for the second global progression analysis. Default is \code{gh}}
+    \item{ttail}{type of alternative in the significant test: \code{left}, \code{right}, \code{both}. Default is \code{left}}
+    \item{sltest}{values for the 1-tailed hypothesis test for all locations. The reference value is not restricted, but it should be either zero (was there any progression?) or negative (was the progression greater than test value?). Default is \code{NULL}}
   \item{truncVal}{p-value cut-off for truncation. Default is \code{1}}
-  \item{type}{Type of regression statistic: \code{slr} for simple linear regression and \code{rank} for Spearman correlation coefficient. Default is \code{slr}}
-  \item{typecomb}{Combination type for p-values. Default is \code{fisher}}
   \item{pwidth}{width of the page (in inches). Default is \code{8.27}}
   \item{pheight}{height of the page (in inches). Default is \code{11.69}}
   \item{margin}{margins of the page (in inches). Default is \code{0.25}}

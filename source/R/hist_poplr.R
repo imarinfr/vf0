@@ -29,7 +29,7 @@ hist_poplr <- function( scomb_obs, pcomb_obs, scomb, nLoc = 52, txtfont = "sans"
   lines( c( scomb_obs, scomb_obs ), 0.8 * c( 0, ymax ), col = "red" )
   points( c( scomb_obs ), 0.8 * ymax, pch = 21, col = "red", bg = "red" )
   text( c( scomb_obs ), 0.9 * ymax, labels = paste( scomb_txt, pcomb_txt ), adj = adj )
-  title( xlab = "S / number of locations n" )
+  title( xlab = "S / n" )
   
   par( ps     = ops )
   par( family = ofamily )

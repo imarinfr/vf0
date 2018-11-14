@@ -1,6 +1,6 @@
 vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
                             plotType = "vf", summaryIndex1 = "md", summaryIndex2 = "gh",
-                            truncVal = 1, type = "slr", typecomb = "fisher",
+                            ttail = "left", sltest = NULL, truncVal = 1,
                             pwidth = 8.27, pheight = 11.69,
                             margin = 0.25, filename = NULL,
                             colorMapType = "pval", colorScale = NULL,
@@ -95,7 +95,7 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   if( plotType == "td" )    vals <- td
   if( plotType == "pd" )    vals <- pd
   if( plotType == "pdghr" ) vals <- pdvalghr( td )
-  pres <- poplr( vals, nperm = nperm, type = type, truncVal = truncVal, typecomb = typecomb )
+  pres <- poplr( vals, nperm = nperm, ttail = ttail, sltest = sltest, truncVal = truncVal )
   # init
   vfinfo0 <- vf[1,1:( locini - 1 )]
   vfinfo1 <- vf[1,1:( locini - 1 )]
