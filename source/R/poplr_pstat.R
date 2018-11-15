@@ -68,6 +68,6 @@ poplr_pstat <- function( vf, porder, ttail = "left", sltest = NULL ) {
   if( ttail == "right" )
     res$pval <- 1 - pt( tstat, ntest - 2 )
   if( ttail == "both" )
-    res$pval <- 2 * pt( -abs( tstat ), ntest - 2 )
+    res$pval <- 2 * ( 1 - pt( abs( tstat ), ntest - 2 ) )
   return( res )
 }

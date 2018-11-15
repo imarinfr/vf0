@@ -22,8 +22,8 @@ ghpostd <- function( td, correction = FALSE ) {
   gh <- as.numeric( tdr[,locini + rankRef - 1] )
   if( correction ) {
     texteval <- paste( "vfenv$nv$", td$tpattern, "_", td$talgorithm, "$nvtdrank$mtdr", sep = "" )
-    tdrref  <- eval( parse( text = texteval ) )
-    gh <- tdrref[rankRef] - gh
+    tdrref   <- eval( parse( text = texteval ) )
+    gh       <- gh - tdrref[rankRef]
   }
   return( gh )
 }

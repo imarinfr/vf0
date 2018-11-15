@@ -2,6 +2,7 @@ vfplotloc <- function( vals, patternMap, vftiles, vfhull, loccol,
                        xmin, xmax, ymin, ymax,
                        txtfont = "sans", pointsize = 10,
                        showaxis = TRUE, colaxis = "black" ) {
+  lumth <- 0.4
 
 # init
   oplt    <- par()$plt
@@ -23,7 +24,7 @@ vfplotloc <- function( vals, patternMap, vftiles, vfhull, loccol,
     vals       <- vals[-idx]
   }
   coltxt <- rep( "grey10", length( patternMap$xod ) )
-  coltxt[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < 0.3] <- "white"
+  coltxt[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < lumth] <- "white"
   text( patternMap$xod, patternMap$yod, vals, col = coltxt )
   par( plt    = oplt )
   par( ps     = ops )

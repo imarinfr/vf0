@@ -7,8 +7,8 @@ colormapgraph <- function( ncol = 3, mapval = NULL, notSeenAsBlack = TRUE,
     mapval <- eval( parse( text = texteval ) )
   }
 
-  mapval$cutoffs[ length( mapval$cutoffs ) ] <-
-          paste( ">",  mapval$cutoffs[ length( mapval$cutoffs ) - 1 ], sep = "" )
+  # reorder from greatest to smallest
+  mapval <- mapval[order( mapval$cutoffs, decreasing = TRUE ),]
 
   total <- nrow( mapval )
   if( notSeenAsBlack ) total <- total + 1

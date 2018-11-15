@@ -2,7 +2,7 @@
 \alias{progols}
 \title{progression by linear ordinary least squares}
 \description{makes a linear regression with projection in the future by projyears years}
-\usage{progols( tdate, index, projyears = 5,
+\usage{progols( tdate, index, projyears = 0,
          xlab = "years from first visit", ylab = "md",
          txtfont = "sans", pointsize = 10, cex = 1,
          markfl = FALSE, prggrp = 3 )}
@@ -11,7 +11,7 @@
   \item{index}{index measured at the corresponding age}
   \item{xlab}{label for x-axis. Default is \code{age}}
   \item{ylab}{label for y-axis. Default is \code{md}}
-  \item{projyears}{Years for projection. Default is \code{5}}
+  \item{projyears}{Years for projection. Default is \code{0}}
   \item{txtfont}{font of the text with visual-sensitivity values. Default is \code{sans}}
   \item{pointsize}{size of the text with visual-sensitivity values. Default is \code{10}}
   \item{cex}{a numerical value giving the amount by which plotting text and symbols should be magnified relative to the default. Default is \code{1}}

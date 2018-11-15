@@ -45,7 +45,5 @@ poplr <- function( vf, nperm = 5000, ttail = "left", sltest = NULL, truncVal = 1
   res$pcomb_obs <- cstat$pcomb_obs
   res$pcomb     <- cstat$pcomb
   res$scomb     <- cstat$scomb
-  res$pstat     <- pstat
-  res$cstat     <- cstat
   return( res )
 }

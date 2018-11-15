@@ -1,4 +1,4 @@
-progols <- function( tdate, index, projyears = 5,
+progols <- function( tdate, index, projyears = 0,
                      xlab = "years from first visit", ylab = "md",
                      txtfont = "sans", pointsize = 10, cex = 1,
                      markfl = FALSE, prggrp = 3 ) {
@@ -26,7 +26,7 @@ progols <- function( tdate, index, projyears = 5,
   par( mgp = c( 1.85, 0.5, 0 ) )
 
   # graph limits
-  xlim <- c( xreg[1], xreg[2] + 1 )
+  xlim <- c( xreg[1], xreg[2] )
   if( mdreg$coefficients[2] <= 0 ) {
     ylim <- c( max( index ) - 6, max( index ) + 1 )
   } else {
@@ -34,7 +34,9 @@ progols <- function( tdate, index, projyears = 5,
   }
   firstTick <- ceiling( ylim[1] )
   tickMarks <- c( firstTick, firstTick + 2, firstTick + 4, firstTick + 6 )
-
+  tooLarge  <- yeardif[index > ylim[2]]
+  tooSmall  <- yeardif[index < ylim[1]]
+  
   plot( yeardif, index, type = "n", axes = FALSE, ann = FALSE, xlim = xlim, ylim = ylim )
   axis( 1, las = 1, tcl = -0.3, lwd = 0.5, lwd.ticks = 0.5 )
   axis( 2, las = 1, tcl = -0.3, lwd = 0.5, lwd.ticks = 0.5, at = tickMarks )
@@ -44,6 +46,8 @@ progols <- function( tdate, index, projyears = 5,
     points( yeardif[1:prggrp], index[1:prggrp], pch = 19, col = "white", cex = 0.1 )
     points( yeardif[( length( yeardif ) - prggrp + 1 ):length( yeardif )], index[( length( yeardif ) - prggrp + 1 ):length( yeardif )], pch = 19, col = "white", cex = 0.1 )
   }
+  if( length( tooSmall ) > 0 ) points( tooSmall, ylim[1] * rep( 1, length( tooSmall ) ), pch = 10, col = "red" )
+  if( length( tooLarge ) > 0 ) points( tooLarge, ylim[2] * rep( 1, length( tooLarge ) ), pch = 10, col = "red" )
   box()
   title( xlab = xlab )
   title( ylab = ylab )

@@ -55,23 +55,39 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
 
   # get the conventional color scale
   if( colorMapType == "pval" & is.null( colorScale ) ) {
-    colorScale  <- nv$pmapsettings
+    if( ttail == "left" )
+      colorScale <- data.frame( cutoffs = c( 0.5,  1,    5,    95,   100  ),
+                                red     = c( 0.89, 1.00, 1.00, 0.97, 0.00 ),
+                                green   = c( 0.00, 0.57, 0.90, 0.94, 0.50 ),
+                                blue    = c( 0.16, 0.15, 0.00, 0.92, 0.00 ) )
+    if( ttail == "right" )
+      colorScale <- data.frame( cutoffs = c( 0.5,  1,    5,    95,   100  ),
+                                red     = c( 0.00, 0.00, 0.00, 0.97, 0.89 ),
+                                green   = c( 0.50, 0.75, 1.00, 0.94, 0.00 ),
+                                blue    = c( 0.00, 0.00, 0.00, 0.92, 0.16 ) )
+    if( ttail == "both" )
+      colorScale <- data.frame( cutoffs = c( 0.5,  1,    5,    95,   99,   99.5, 100  ),
+                                red     = c( 0.89, 1.00, 1.00, 0.97, 0.00, 0.00, 0.00 ),
+                                green   = c( 0.00, 0.57, 0.90, 0.94, 1.00, 0.75, 0.50 ),
+                                blue    = c( 0.16, 0.15, 0.00, 0.92, 0.00, 0.00, 0.00 ) )
   }
   if( colorMapType == "slope" & is.null( colorScale ) ) {
-    colorScale         <- NULL
-    colorScale$cutoffs <- c( -1.5, -1.0, -0.5, 0.5, 1 )
-    colorScale$red     <- c( 0.8914642, 0.9999847, 0.9999847, 0.9742432, 0.0000000 )
-    colorScale$green   <- c( 0.0000000, 0.5706177, 0.9041748, 0.9355011, 0.9999847 )   
-    colorScale$blue    <- c( 0.1622925, 0.1513214, 0.0000000, 0.9213409, 0.9999847 )
-    colorScale         <- as.data.frame( colorScale )
+    if( ttail == "left" )
+      colorScale <- data.frame( cutoffs = c( -1.5, -1.0, -0.5, 0.5,  1    ),
+                                red     = c( 0.89, 1.00, 1.00, 0.97, 0.00 ),
+                                green   = c( 0.00, 0.57, 0.90, 0.94, 0.50 ),
+                                blue    = c( 0.16, 0.15, 0.00, 0.92, 0.00 ) )
+    if( ttail == "right" )
+      colorScale <- data.frame( cutoffs = c(  1.5,  1.0,  0.5, 0.5,  1    ),
+                                red     = c( 0.00, 0.00, 0.00, 0.97, 0.89 ),
+                                green   = c( 0.50, 0.75, 1.00, 0.94, 0.00 ),
+                                blue    = c( 0.00, 0.00, 0.00, 0.92, 0.16 ) )
   }
   if( colorMapType == "blind" & is.null( colorScale ) ) {
-    colorScale         <- NULL
-    colorScale$cutoffs <- c( 5, 10, 15, 20 )
-    colorScale$red     <- c( 0.8914642, 0.9999847, 0.9999847, 0.9742432 )
-    colorScale$green   <- c( 0.0000000, 0.5706177, 0.9041748, 0.9355011 )   
-    colorScale$blue    <- c( 0.1622925, 0.1513214, 0.0000000, 0.9213409 )
-    colorScale         <- as.data.frame( colorScale )
+      colorScale <- data.frame( cutoffs = c( 5, 10, 15, 20 ),
+                                red     = c( 0.89, 1.00, 1.00, 0.97 ),
+                                green   = c( 0.00, 0.57, 0.90, 0.94 ),
+                                blue    = c( 0.16, 0.15, 0.00, 0.92 ) )
   }
 
   ######################
@@ -239,8 +255,10 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   # color-code map
   if( colorMapType == "slope" ) colorScale$cutoffs <- 10 * colorScale$cutoffs
   par( new = TRUE )
-  par( fig = c( 0.86, 0.90, 0.37, 0.53 ) )
-  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.3, pointsize = txtsize, notSeenAsBlack = FALSE )
+
+  if( ttail == "both" ) par( fig = c( 0.86, 0.90, 0.375, 0.525 ) )
+  else                  par( fig = c( 0.86, 0.90, 0.40, 0.50 ) )
+  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.2, pointsize = txtsize, notSeenAsBlack = FALSE )
   # plot permutation histogram
   par( new = TRUE )
   par( fig = c( 0.10, 0.35, 0.07, 0.23 ) )

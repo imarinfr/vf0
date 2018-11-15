@@ -12,9 +12,7 @@ poplr_cstat <- function( pval, truncVal = 1, minmax = TRUE,
   nloc          <- ncol( pval )
   res           <- NULL
   res$pcomb_obs <- NA
-  res$pvalcomb  <- rep( NA, nperm )
   res$pcomb     <- rep( NA, nperm )
-  res$seq_sig   <- NA
   res$spatialwtd <- matrix( NA, nperm, nloc )
   # init spatial weights, distance and eccentricity weights
   if( is.null( distance ) )   distance   <- matrix( rep( c( 1 ), nloc^2 ), nloc, nloc )

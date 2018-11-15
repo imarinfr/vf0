@@ -2,7 +2,8 @@ vfplot_legoplot <- function( vals, patternMap, vftiles, vfhull, loccolout, locco
                              xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
                              txtfont = "sans", pointsize = 10,
                              showaxis = TRUE, colaxis = "black" ) {
-
+  lumth <- 0.4
+  
   # if not imposed, calculate limits of plot
   # expand by 5% each axis
   xrange <- max( patternMap$xod ) - min( patternMap$xod )
@@ -34,7 +35,7 @@ vfplot_legoplot <- function( vals, patternMap, vftiles, vfhull, loccolout, locco
   }
 
   coltxt <- rep( "grey10", length( patternMap$xod ) )
-  coltxt[( 0.2126 * loccolin$red + 0.7152 * loccolin$green + 0.0722 * loccolin$blue ) < 0.3] <- "white"
+  coltxt[( 0.2126 * loccolin$red + 0.7152 * loccolin$green + 0.0722 * loccolin$blue ) < lumth] <- "white"
   text( patternMap$xod, patternMap$yod, vals, col = coltxt )
   par( plt    = oplt )
   par( ps     = ops )
