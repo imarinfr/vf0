@@ -1,4 +1,4 @@
-poplr_pstat <- function( vf, porder, ttail = "left", sltest = NULL ) {
+poplr_pstat <- function( vf, porder, sltest = NULL ) {
   ##############
   # input checks
   ##############
@@ -12,9 +12,6 @@ poplr_pstat <- function( vf, porder, ttail = "left", sltest = NULL ) {
     stop( "all visual fields should belong to the same subject tested with the same perimeter and algorithm on the same locations" )
   }
   if( nrow( porder ) > 1000000 ) stop( "please don't! Don't use more than a million permutations!" )
-  if( ttail != "left"  &
-      ttail != "right" &
-      ttail != "both"  ) stop( "Wrong type of significance test. It ought to be 'left', 'right', or 'both'" )
   texteval <- "vfsettings$locini"
   locini   <- eval( parse( text = texteval ) )
 
@@ -39,8 +36,7 @@ poplr_pstat <- function( vf, porder, ttail = "left", sltest = NULL ) {
   if( is.null( sltest ) ) sltest <- rep( c( 0 ), nloc )
   # get the locations for which sensitivity did not change
   invariantloc <- as.numeric( which( colSds( vf ) <= precision ) )
-  # point-wise linear regression over time
-  # permutation-invarian values
+  # point-wise linear regression over time permutation-invarian values
   sage  <- sum( age )
   mage  <- mean( age )
   ssage <- ( ntest - 1 ) * var( age )
@@ -62,12 +58,6 @@ poplr_pstat <- function( vf, porder, ttail = "left", sltest = NULL ) {
   res$int[,invariantloc] <- vf[1,invariantloc]
   res$se[,invariantloc]  <- precision
   # test sensitivity slope lower than specified slope
-  tstat <- ( res$sl - t( matrix( rep( sltest, nloc * nperm ), nloc, nperm ) ) ) / res$se
-  if( ttail == "left" )
-    res$pval <- pt( tstat, ntest - 2 )
-  if( ttail == "right" )
-    res$pval <- 1 - pt( tstat, ntest - 2 )
-  if( ttail == "both" )
-    res$pval <- 2 * ( 1 - pt( abs( tstat ), ntest - 2 ) )
+  res$locpvals <- pt( ( res$sl - t( matrix( rep( sltest, nloc * nperm ), nloc, nperm ) ) ) / res$se, ntest - 2 )
   return( res )
 }

@@ -25,17 +25,15 @@ vfplot_plr <- function( sl, pval, vfinfo, newWindow = FALSE,
   if( is.null( colorMapType ) ) stop( "colorMapType must be 'slope', 'pval', or 'blind'" )
   if( colorMapType != "pval" & colorMapType != "slope" & colorMapType != "blind" ) stop( "wrong colorMapType. Must be 'slope', 'pval', or 'blind'" )
 
-  # init all color values to white
-  pval  <- 100 * pval
-  pvalc <- rep( 100, length( pval ) )
-  pvalc[which( pval <= nv$pmapsettings$cutoffs[1] )] <- nv$pmapsettings$cutoffs[1]
-  for( i in 2:( length( nv$pmapsettings$cutoffs ) - 1 ) ) pvalc[which( pval > nv$pmapsettings$cutoffs[i - 1] & pval <= nv$pmapsettings$cutoffs[i] )] <- nv$pmapsettings$cutoffs[i]
-  
   # get the conventional color scale
   if( colorMapType == "pval" ) {
     if( is.null( colorScale ) ) {
       colorScale  <- nv$pmapsettings
     }
+    pval  <- 100 * pval
+    pvalc <- rep( 100, length( pval ) )
+    pvalc[which( pval <= colorScale$cutoffs[1] )] <- colorScale$cutoffs[1]
+    for( i in 2:( length( colorScale$cutoffs ) - 1 ) ) pvalc[which( pval > colorScale$cutoffs[i - 1] & pval <= colorScale$cutoffs[i] )] <- colorScale$cutoffs[i]
     valForMapping <- pvalc
   }
   # inform the color scale for slopes

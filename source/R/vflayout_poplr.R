@@ -1,5 +1,5 @@
-vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
-                            plotType = "vf", summaryIndex1 = "md", summaryIndex2 = "gh",
+vflayout_poplr <- function( vf, grp = 3, nperm = 5000, sparklines = TRUE,
+                            plotType = "td", summaryIndex1 = "md", summaryIndex2 = "gh",
                             ttail = "left", sltest = NULL, truncVal = 1,
                             pwidth = 8.27, pheight = 11.69,
                             margin = 0.25, filename = NULL,
@@ -9,7 +9,7 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   txtfont   <- "sans"
   pointsize <- 10
   txtsize   <- 6
-
+  lumth     <- 0.4
   ##############
   # input checks
   ##############
@@ -32,6 +32,7 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   # truncation must be between zero and one
   if( truncVal <= 0 | truncVal > 1 ) stop("truncation must be between 0 and 1")
 
+  if( ttail != "left" & ttail != "right" & ttail != "both"  ) stop( "wrong PoPLR analysis" )
   # special locations in the visual field: BS locations
   bsxy   <- NULL
   bsxy$x <- c( 15, 15)
@@ -61,10 +62,10 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
                                 green   = c( 0.00, 0.57, 0.90, 0.94, 0.50 ),
                                 blue    = c( 0.16, 0.15, 0.00, 0.92, 0.00 ) )
     if( ttail == "right" )
-      colorScale <- data.frame( cutoffs = c( 0.5,  1,    5,    95,   100  ),
-                                red     = c( 0.00, 0.00, 0.00, 0.97, 0.89 ),
-                                green   = c( 0.50, 0.75, 1.00, 0.94, 0.00 ),
-                                blue    = c( 0.00, 0.00, 0.00, 0.92, 0.16 ) )
+      colorScale <- data.frame( cutoffs = c( 5,    95,    99,  99.5,  100 ),
+                                red     = c( 0.89, 0.97, 0.00, 0.00, 0.00 ),
+                                green   = c( 0.00, 0.94, 1.00, 0.75, 0.50 ),
+                                blue    = c( 0.16, 0.92, 0.00, 0.00, 0.00 ) )
     if( ttail == "both" )
       colorScale <- data.frame( cutoffs = c( 0.5,  1,    5,    95,   99,   99.5, 100  ),
                                 red     = c( 0.89, 1.00, 1.00, 0.97, 0.00, 0.00, 0.00 ),
@@ -111,7 +112,8 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   if( plotType == "td" )    vals <- td
   if( plotType == "pd" )    vals <- pd
   if( plotType == "pdghr" ) vals <- pdvalghr( td )
-  pres <- poplr( vals, nperm = nperm, ttail = ttail, sltest = sltest, truncVal = truncVal )
+  pres <- poplr( vals, nperm = nperm, sltest = sltest, truncVal = truncVal )
+
   # init
   vfinfo0 <- vf[1,1:( locini - 1 )]
   vfinfo1 <- vf[1,1:( locini - 1 )]
@@ -190,7 +192,7 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   ymax   <- max( patternMap$yod ) + 0.025 * yrange
 
   color0 <- vfgrayscale( vf0, vfinfo0$sage, pattern = vfinfo0$tpattern, algorithm = vfinfo0$talgorithm )
-  color1 <- vfgrayscale( vf1, vfinfo1$sage, pattern = vfinfo0$tpattern, algorithm = vfinfo0$talgorithm )
+  color1 <- vfgrayscale( vf1, vfinfo1$sage, pattern = vfinfo1$tpattern, algorithm = vfinfo1$talgorithm )
   # add void points if not in the test of locations
   for( i in 1:nrow( bsxy ) ) {
     if( xmin < bsxy$x[i] & xmax > bsxy$x[i] & ymin < bsxy$y[i] & ymax > bsxy$y[i] ) {
@@ -233,7 +235,7 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   # sensitivity plot last n visits
   par( new = TRUE )
   par( fig = c( 0.50, 0.85, 0.60, 0.90 ) )
-  vftxt[which( vf1 < 0 )] <- "<0"
+  vftxt <- round( vf1 )
   vftxt[which( vftxt < 0 )] <- "<0"
   vfplotloc( vftxt, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = color1,
              xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, pointsize = txtsize,
@@ -249,20 +251,53 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000,
   # PLR plot
   par( new = TRUE )
   par( fig = c( 0.50, 0.85, 0.30, 0.60 ) )
-  vfplot_plr( pres$sl, pres$pval, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale, pointsize = txtsize,
+  vfplot_plr( pres$sl, pres$locpvals, pres$vfdata,
+              colorMapType = colorMapType, colorScale = colorScale,
+              txtfont = txtfont, pointsize = txtsize,
               showaxis = showaxis, colaxis = colaxis )
-  vfplot_sparklines( vf, patternMap, col = "black" )
+  if( sparklines ) {
+    pval  <- 100 * pres$locpvals
+    pvalc <- rep( 100, length( pval ) )
+    pvalc[which( pval <= colorScale$cutoffs[1] )] <- colorScale$cutoffs[1]
+    for( i in 2:( length( colorScale$cutoffs ) - 1 ) ) pvalc[which( pval > colorScale$cutoffs[i - 1] & pval <= colorScale$cutoffs[i] )] <- colorScale$cutoffs[i]
+    loccol <- vfcolormap( pvalc, mapval = colorScale )
+    collin <- rep( "gray25", nrow( loccol ) )
+    collin[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < lumth] <- "white"
+    collin[loccol$red < 0.1 & loccol$green < 0.6 & loccol$blue < 0.1] <- "white" # ad-hoc patch to make green scale look good
+    vfplot_sparklines( vf, collin = collin )
+  }
   # color-code map
   if( colorMapType == "slope" ) colorScale$cutoffs <- 10 * colorScale$cutoffs
   par( new = TRUE )
 
-  if( ttail == "both" ) par( fig = c( 0.86, 0.90, 0.375, 0.525 ) )
+  if( ttail == "both" ) par( fig = c( 0.86, 0.90, 0.38, 0.52 ) )
   else                  par( fig = c( 0.86, 0.90, 0.40, 0.50 ) )
-  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.2, pointsize = txtsize, notSeenAsBlack = FALSE )
+  # reorder from greatest to smallest
+  colorScale <- colorScale[order( colorScale$cutoffs, decreasing = TRUE ),]
+  colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.22, pointsize = txtsize, notSeenAsBlack = FALSE )
   # plot permutation histogram
   par( new = TRUE )
   par( fig = c( 0.10, 0.35, 0.07, 0.23 ) )
-  hist_poplr( pres$scomb_obs, pres$pcomb_obs, pres$scomb )
+  if( ttail == "left" ) {
+    coltxt  = rgb( red = 1.0, green = 0.0, blue = 0.0 )
+    colhist = rgb( red = 1.0, green = 0.0, blue = 0.0, alpha = 0.5 )
+    hist_poplr1( pres$s, pres$pval, pres$sp, coltxt = coltxt, colhist = colhist )
+  }
+  if( ttail == "right" ) {
+    coltxt  = rgb( red = 0.0, green = 0.5, blue = 0.0 )
+    colhist = rgb( red = 0.0, green = 0.5, blue = 0.0, alpha = 0.5 )
+    hist_poplr1( pres$sr, pres$pvalr, pres$spr, coltxt = coltxt, colhist = colhist )
+  }
+  if( ttail == "both" ) {
+    coltxtl  = rgb( red = 1.0, green = 0.0, blue = 0.0 )
+    colhistl = rgb( red = 1.0, green = 0.0, blue = 0.0, alpha = 0.5 )
+    coltxtr  = rgb( red = 0.0, green = 0.5, blue = 0.0 )
+    colhistr = rgb( red = 0.0, green = 0.5, blue = 0.0, alpha = 0.5 )
+    hist_poplr2( pres$s, pres$pval, pres$sp, pres$sr, pres$pvalr, pres$spr,
+                 coltxtl = coltxtl, colhistl = colhistl,
+                 coltxtr = coltxtr, colhistr = colhistr )
+  }
+
   # general index 1
   par( new = TRUE )
   par( fig = c( 0.375, 0.625, 0.07, 0.23 ) )

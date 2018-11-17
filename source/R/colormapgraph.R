@@ -2,13 +2,12 @@ colormapgraph <- function( ncol = 3, mapval = NULL, notSeenAsBlack = TRUE,
                            txtfont = "sans", pointsize = 10,
                            symbol = "circle", size = 1, inch = 0.18 ) {
 
+  lumth <- 0.4
+
   if( is.null( mapval ) ) {
     texteval <- "vfenv$nv$pmapsettings"
     mapval <- eval( parse( text = texteval ) )
   }
-
-  # reorder from greatest to smallest
-  mapval <- mapval[order( mapval$cutoffs, decreasing = TRUE ),]
 
   total <- nrow( mapval )
   if( notSeenAsBlack ) total <- total + 1
@@ -61,7 +60,8 @@ colormapgraph <- function( ncol = 3, mapval = NULL, notSeenAsBlack = TRUE,
   eval( parse( text = evaltxt ) )
 
   coltxt <- rep( "black", length( coords$x ) )
-  coltxt[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < 0.3] <- "white"
+  coltxt[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < lumth] <- "white"
+  coltxt[loccol$red < 0.1 & loccol$green < 0.6 & loccol$blue < 0.1] <- "white" # ad-hoc patch to make green scale look good
   text( coords$x, coords$y, txtval, col = coltxt )
   
   par( plt = oplt )

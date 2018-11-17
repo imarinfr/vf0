@@ -2,10 +2,10 @@
 \alias{vfplot_sparklines}
 \title{Sparklines}
 \description{Sparklines to print on top of vfplots}
-\usage{vfplot_sparklines( vf,  patternMap, ... )}
+\usage{vfplot_sparklines( vf, collin = NULL, ... )}
 \arguments{
   \item{vf}{\code{\link{vf}}-object with sensitivity thresholds, or TD or PD values}
-  \item{patternMap}{locations where to plot symbols, the TD and PD values}
+  \item{collin}{color for each sparkline to be plotted. Default is \code{NULL}, then all plotted in dark gray}
   \item{...}{Arguments to be passed to methods, such as graphical parameters.}
 }
 \details{Plots sparklines on top of other vfplots. It is used for the PLR plot in the PoPLR layout.}

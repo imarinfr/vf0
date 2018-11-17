@@ -213,7 +213,7 @@ vflayout_progress <- function( vf, plotType, grp = 2, nperm = 5000,
   opar <- par( no.readonly = TRUE )
   # PoPLR pointwise plot
   par( fig = c( 0.05, 0.45, 0.30, 0.65 ) )
-  vfplot_plr( pres$sl, pres$pval, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale,
+  vfplot_plr( pres$sl, pres$pvall, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale,
               showaxis = showaxis, colaxis = colaxis )
   # color scale
   par( new = TRUE )
@@ -387,7 +387,7 @@ vflayout_progress <- function( vf, plotType, grp = 2, nperm = 5000,
   seekViewport( "results2" )
   
   text <- round( 10 * slm$coefficients[2,1], 1 )
-  text <- paste( text, round( pres$pcomb_obs, 3 ), sep = "\n" )
+  text <- paste( text, round( pres$pvall, 3 ), sep = "\n" )
   text <- paste( text, round( mean( index[idxfirst]  ), 2 ), sep = "\n" )
   text <- paste( text, round( mean( index[idxmiddle] ), 2 ), sep = "\n" )
   text <- paste( text, round( mean( index[idxlast]   ), 2 ), sep = "\n" )

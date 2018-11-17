@@ -1,4 +1,4 @@
-poplr <- function( vf, nperm = 5000, ttail = "left", sltest = NULL, truncVal = 1 ) {
+poplr <- function( vf, nperm = 5000, sltest = NULL, truncVal = 1 ) {
   ##############
   # input checks
   ##############
@@ -23,9 +23,9 @@ poplr <- function( vf, nperm = 5000, ttail = "left", sltest = NULL, truncVal = 1
   porder <- make.permSpace( c( 1:nrow( vf ) ), nperm, return.permIDs = TRUE )$permID
   porder <- rbind( c( 1:nrow( vf ) ), porder )
   # get the p-value statitics of the permutation analysis ...
-  pstat         <- poplr_pstat( vf, porder = porder, ttail = ttail, sltest = sltest )
+  pstat <- poplr_pstat( vf, porder = porder, sltest = sltest )
   # ... and the actual analysis
-  cstat         <- poplr_cstat( pstat$pval, truncVal = truncVal )
+  cstat <- poplr_cstat( pstat$locpvals, truncVal = truncVal )
   res <- NULL
   # get last VF in res$vfdata
   res$vfdata      <- vf[nrow( vf ),]
@@ -33,17 +33,18 @@ poplr <- function( vf, nperm = 5000, ttail = "left", sltest = NULL, truncVal = 1
   evaltxt <- paste("vfsettings$", vf$tpattern[1], "$bs", sep = "")
   bs <- eval( parse( text = evaltxt ) ) + locini - 1
   if ( !is.na( bs[1] ) ) res$vfdata <- res$vfdata[-bs]
-  res$nvisits   <- nrow( vf )
-  res$tail      <- ttail
-  res$sltest    <- sltest
-  res$nperm     <- nperm
-  res$sl        <- pstat$sl[1,]
-  res$int       <- pstat$int[1,]
-  res$se        <- pstat$se[1,]
-  res$pval      <- pstat$pval[1,]
-  res$scomb_obs <- cstat$scomb_obs
-  res$pcomb_obs <- cstat$pcomb_obs
-  res$pcomb     <- cstat$pcomb
-  res$scomb     <- cstat$scomb
+  res$nvisits  <- nrow( vf )
+  res$sltest   <- sltest
+  res$nperm    <- nperm
+  res$sl       <- pstat$sl[1,]
+  res$int      <- pstat$int[1,]
+  res$se       <- pstat$se[1,]
+  res$locpvals <- pstat$locpvals[1,]
+  res$s        <- cstat$s
+  res$sp       <- cstat$sp
+  res$pval     <- cstat$pval
+  res$sr       <- cstat$sr
+  res$spr      <- cstat$spr
+  res$pvalr    <- cstat$pvalr
   return( res )
 }

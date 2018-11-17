@@ -25,6 +25,7 @@ vfplotloc <- function( vals, patternMap, vftiles, vfhull, loccol,
   }
   coltxt <- rep( "grey10", length( patternMap$xod ) )
   coltxt[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < lumth] <- "white"
+  coltxt[loccol$red < 0.1 & loccol$green < 0.6 & loccol$blue < 0.1] <- "white" # ad-hoc patch to make green scale look good
   text( patternMap$xod, patternMap$yod, vals, col = coltxt )
   par( plt    = oplt )
   par( ps     = ops )
