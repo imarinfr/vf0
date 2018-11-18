@@ -281,12 +281,12 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000, sparklines = TRUE,
   if( ttail == "left" ) {
     coltxt  = rgb( red = 1.0, green = 0.0, blue = 0.0 )
     colhist = rgb( red = 1.0, green = 0.0, blue = 0.0, alpha = 0.5 )
-    hist_poplr1( pres$s, pres$pval, pres$sp, coltxt = coltxt, colhist = colhist )
+    hist_poplr1( pres$s, pres$pval, pres$sp, ttail = ttail, coltxt = coltxt, colhist = colhist )
   }
   if( ttail == "right" ) {
     coltxt  = rgb( red = 0.0, green = 0.5, blue = 0.0 )
     colhist = rgb( red = 0.0, green = 0.5, blue = 0.0, alpha = 0.5 )
-    hist_poplr1( pres$sr, pres$pvalr, pres$spr, coltxt = coltxt, colhist = colhist )
+    hist_poplr1( pres$sr, pres$pvalr, pres$spr, ttail = ttail, coltxt = coltxt, colhist = colhist )
   }
   if( ttail == "both" ) {
     coltxtl  = rgb( red = 1.0, green = 0.0, blue = 0.0 )

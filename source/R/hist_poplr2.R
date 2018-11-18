@@ -27,12 +27,10 @@ hist_poplr2 <- function( sl, pvall, spl, sr, pvalr, spr,
   }
   adjl <- 0.5
   adjr <- 0.5
-  sr  <- 12 - sr
-  spr <- 12 - spr
   if( sl < 2 ) adjl <- 0
   if( sl > 4 ) adjl <- 1
-  if( sr < 8 ) adjr <- 0
-  if( sr > 10 ) adjr <- 1
+  if( sr < 2 ) adjr <- 0
+  if( sr > 4 ) adjr <- 1
   breaks  <- seq( 0, 2 * 6, by = sep )
 
   par( ps     = pointsize )
@@ -41,28 +39,31 @@ hist_poplr2 <- function( sl, pvall, spl, sr, pvalr, spr,
   par( mgp = c( 1.85, 0.5, 0 ) )
 
   ymax <- max( c( max( hist( spl, breaks = breaks, plot = FALSE )$density ),
-                  max( hist( spr, breaks = breaks, plot = FALSE )$density ) ) )
+          max( hist( spr, breaks = breaks, plot = FALSE )$density ) ) )
+  xlim <- c( -6, 6 )
+  ylim <- c( 0, ymax )
+  
   # left tail
-  hist( spl, breaks = breaks, freq = FALSE, main = "",
-        xlim = c( 0, 12 ), ylim = c( 0, ymax ),
+  hist( -spl, breaks = -breaks, freq = FALSE, main = "",
+        xlim = xlim, ylim = ylim,
         xlab = "", ylab = "", lty = 0,
         col = colhistl,
         axes = FALSE, ann = FALSE )
-  lines( c( sl, sl ), 0.8 * c( 0, ymax ), col = coltxtl )
-  points( sl, 0.8 * ymax, pch = 21, col = coltxtl, bg = coltxtl )
-  text( sl, 0.9 * ymax, labels = paste( spl_txt, pvall_txt ), adj = adjl, cex = 0.7 )
   # right tail
-  hist( spr, breaks = breaks, freq = FALSE, main = "",
-        xlim = c( 0, 6 ), ylim = c( 0, ymax ),
-        xlab = "", ylab = "", lty = 0,
-        col = colhistr,
-        axes = FALSE, ann = FALSE, add = TRUE )
-  lines( c( sr, sr ), 0.6 * c( 0, ymax ), col = coltxtr )
-  points( sr, 0.6 * ymax, pch = 21, col = coltxtr, bg = coltxtr )
-  text( sr, 0.7 * ymax, labels = paste( spr_txt, pvalr_txt ), adj = adjr, cex = 0.7 )
-
-  axis( 1, at = c( 0, 2, 4, 6, 8, 10, 12 ), labels = c( 0, 2, 4, 6, 4, 2, 0 ),
+  hist( spr, breaks = breaks, freq = FALSE, lty = 0,
+        col = colhistr, add = TRUE )
+  # graph formatting
+  axis( 1, at = c( -6, -4, -2, 0, 2, 4, 6 ),
+        labels = c( 6, 4, 2, 0, 2, 4, 6 ),
         tcl = -0.3, lwd = 0.5, lwd.ticks = 0.5 )
-  lines( c( 6, 6 ), c( 0, ymax ), col = "black", lty = "dashed" )
+  lines( c( 0, 0 ), c( 0, ymax ), col = "gray", lwd = 3 )
   title( xlab = "S / n" )
+  # left tail
+  lines( c( -sl, -sl ), 0.8 * c( 0, ymax ), col = coltxtl )
+  points( -sl, 0.8 * ymax, pch = 21, col = coltxtl, bg = coltxtl, cex = 0.7 )
+  text( -sl, 0.9 * ymax, labels = paste( spl_txt, pvall_txt ), adj = adjl, cex = 0.7 )
+  # right tail
+  lines( c( sr, sr ), 0.8 * c( 0, ymax ), col = coltxtr )
+  points( sr, 0.8 * ymax, pch = 21, col = coltxtr, bg = coltxtr, cex = 0.7 )
+  text( sr, 0.9 * ymax, labels = paste( spr_txt, pvalr_txt ), adj = adjr, cex = 0.7 )
 }
