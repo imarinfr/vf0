@@ -37,7 +37,8 @@ hist_poplr1 <- function( s, pval, sp, ttail = "left",
     breaks <- -breaks
     xlim   <- c( -6, 0 )
     at     <- c( -6, -4, -2, 0 )
-    labels = c( 6, 4, 2, 0 )
+    labels <- c( 6, 4, 2, 0 )
+    adj    <- abs( 1 - adj )
   }
   hist( sp, breaks = breaks, freq = FALSE, main = "",
         xlim = xlim, ylim = ylim,

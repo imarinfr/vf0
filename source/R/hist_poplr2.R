@@ -27,8 +27,8 @@ hist_poplr2 <- function( sl, pvall, spl, sr, pvalr, spr,
   }
   adjl <- 0.5
   adjr <- 0.5
-  if( sl < 2 ) adjl <- 0
-  if( sl > 4 ) adjl <- 1
+  if( sl < 2 ) adjl <- 1
+  if( sl > 4 ) adjl <- 0
   if( sr < 2 ) adjr <- 0
   if( sr > 4 ) adjr <- 1
   breaks  <- seq( 0, 2 * 6, by = sep )
