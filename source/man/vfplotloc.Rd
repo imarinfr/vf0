@@ -2,16 +2,16 @@
 \alias{vfplotloc}
 \title{visual field data plot}
 \description{plots location-specific data at each location of the visual field. It is the function called by \code{\link{vfplot}}}
-\usage{vfplotloc( vals, patternMap, vftiles, vfhull, loccol,
+\usage{vfplotloc( vals, patternMap, loccol, vftiles, vfhull,
                   xmin, xmax, ymin, ymax,
                   txtfont = "sans", pointsize = 10,
                   showaxis = TRUE, colaxis = "black" )}
 \arguments{
   \item{vals}{sensitivity threshold, TD or PD values, or other location-specific values}
   \item{patternMap}{locations where to plot symbols, the TD and PD values}
+  \item{loccol}{color to apply to each location. Typically calculated from the normative values}
   \item{vftiles}{Tiles for the tessellation calculated with Voronoi polygons}
   \item{vfhull}{Hull defined for the visual field test.}
-  \item{loccol}{color to apply to each location. Typically calculated from the normative values}
   \item{xmin, xmax, ymin, ymax}{minimum and maximum limits on the x and y axes, in degrees of visual angle.}
   \item{txtfont}{font of the text with visual-sensitivity values. Default is \code{sans}}
   \item{pointsize}{size of the text with visual-sensitivity values. Default is \code{10}}

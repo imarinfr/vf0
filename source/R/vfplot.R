@@ -1,4 +1,4 @@
-vfplot <- function( vf, plotType,
+vfplot <- function( vf, plotType = "vf",
                     xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
                     notSeenAsBlack = TRUE, newWindow = FALSE,
                     txtfont = "sans", pointsize = 10, width = 6,
@@ -9,12 +9,6 @@ vfplot <- function( vf, plotType,
     stop("Error! vf cannot have more than 1 rows")
   }
 
-  # special locations in the visual field: BS locations
-  bsxy   <- NULL
-  bsxy$x <- c( 15, 15)
-  bsxy$y <- c( 3, -3 )
-  bsxy   <- as.data.frame( bsxy )
-  
   texteval <- "vfsettings$locini"
   locini   <- eval( parse( text = texteval ) )
   
@@ -27,6 +21,13 @@ vfplot <- function( vf, plotType,
   patternMap <- eval( parse( text=evaltxt ) )
   patternMap <- patternMap[,c( "xod", "yod" )]
 
+  # get blind spot position
+  evaltxt <- paste( "vfsettings$", vf$tpattern, "$bs", sep = "" )
+  bs      <- eval( parse( text = evaltxt ) )
+
+  # special locations in the visual field: BS locations
+  bsxy <- data.frame( xod = c( 15, 15), yod = c( 3, -3 ) )
+
   # if not imposed, calculate limits of plot
   # expand by 5% each axis
   xrange <- max( patternMap$xod ) - min( patternMap$xod )
@@ -36,70 +37,44 @@ vfplot <- function( vf, plotType,
   if( is.null( ymin ) ) ymin <- min( patternMap$yod ) - 0.025 * yrange
   if( is.null( ymax ) ) ymax <- max( patternMap$yod ) + 0.025 * yrange
 
-# read in the plotType and decide what to do
-  if( plotType == "vf" ) {
-    dev  <- vf
-  }
-
-# if plot type id 'td' then calculate total deviation and total deviation probability
+# if plot type is "td", "pd", or "pdghr" then calculate corresponding deviation maps
   if( plotType == "td" ) {
-    dev  <- tdval( vf )
-    devp <- tdpmap( dev )
+    dev <- tdval( vf )
+    vfp <- tdpmap( dev )
   }  
-    
-# if plot type id 'pd' then first calculate total deviation
-# use the toal deviation to calculate probabilty deviation 
   if( plotType == "pd" ) {
-    dev  <- pdval( tdval( vf ) )
-    devp <- pdpmap( dev )
+    dev <- pdval( tdval( vf ) )
+    vfp <- pdpmap( dev )
   }
-
-# if plot type id "pdghr" then first calculate total deviation
-# use the total deviation to calculate pattern deviation from global-sensitivity estimate
   if( plotType == "pdghr" ) {
-    dev  <- pdvalghr( tdval( vf ) )
-    devp <- pdpmapghr( dev )
+    dev <- pdvalghr( tdval( vf ) )
+    vfp <- pdpmapghr( dev )
   }
 
-# getRGB will return a table with the red, green and blue intensity values 
-# corresponding to pattern deviation at each location
+# get colors for TD, PD maps or grayscale with VF plots
   if( plotType == "vf" ) {
-    plotColor <- vfgrayscale( dev[,locini:( locini + loc_num - 1 )], age = vf$sage, pattern = vf$tpattern, algorithm = vf$talgorithm )
-    cloneDev  <- as.character( round( dev[,locini:( locini + loc_num - 1 )] ) )
-    cloneDev[which( dev[,locini:( locini + loc_num - 1 )] < 0 )] = "<0"
+    plotColor <- vfgrayscale( vf[,locini:( locini + loc_num - 1 )], age = vf$sage, pattern = vf$tpattern, algorithm = vf$talgorithm )
+    vals <- as.character( round( vf[,locini:( locini + loc_num - 1 )] ) )
+    vals[which( vf[,locini:( locini + loc_num - 1 )] < 0 )] = "<0"
   }  else {
-    plotColor <- vfcolormap( as.numeric( devp[,locini:( locini + loc_num - 1 )] ) )
-    cloneDev  <- as.numeric( dev[,locini:( locini + loc_num - 1 )] )
-    cloneDev  <- as.character( round( cloneDev ) )
+    plotColor <- vfcolormap( as.numeric( vfp[,locini:( locini + loc_num - 1 )] ) )
+    vals <- as.character( round( as.numeric( dev[,locini:( locini + loc_num - 1 )] ) ) )
     if( notSeenAsBlack ) {
       idxblack <- which( vf[locini:( locini + loc_num - 1 )] <= 0)
       if( length( idxblack ) > 0 ) plotColor[idxblack,] <- 0
     }
   }
 
-  # if NA then plot all in black
-  plotColor[is.na( plotColor )] <- 0
-
-  # add void points if not in the test of locations
-  for( i in 1:nrow( bsxy ) ) {
-    if( xmin < bsxy$x[i] & xmax > bsxy$x[i] & ymin < bsxy$y[i] & ymax > bsxy$y[i] ) {
-      idx <- which( patternMap$xod == bsxy$x[i] & patternMap$yod == bsxy$y[i] )
-      if( length( idx ) > 0 ) {
-        if( plotType == "vf" ) {
-          plotColor[idx,] <- c( 0, 0, 0 )
-        }  else {
-          plotColor[idx,] <- c( 0.5, 0.5, 0.5 )
-        }
-      } else {
-        patternMap <- rbind( patternMap, c( bsxy$x[i], bsxy$y[i] ) )
-        cloneDev   <- c( cloneDev,  NA )
-        if( plotType == "vf" ) {
-          plotColor <- rbind( plotColor, c( 0, 0, 0 ) )
-        }  else {
-          plotColor <- rbind( plotColor, c( 0.5, 0.5, 0.5 ) )
-        }
-      }
-    }
+  # add blind spot locations if required
+  if( is.na( bs[1] ) & 
+      ( ( xmin < bsxy$x[1] & xmax > bsxy$x[1] & ymin < bsxy$y[1] & ymax > bsxy$y[1] ) |
+        ( xmin < bsxy$x[2] & xmax > bsxy$x[2] & ymin < bsxy$y[2] & ymax > bsxy$y[2] ) ) ) {
+    vals       <- c( vals, c( "", "" ) )
+    patternMap <- rbind( patternMap, bsxy )
+    if( plotType == "vf" ) col <- c( 0, 0, 0 )
+    else                   col <- c( 0.5, 0.5, 0.5 )
+    plotColor  <- rbind( plotColor, col )
+    plotColor  <- rbind( plotColor, col )
   }
 
   if( vf$seye == "OS" ) {
@@ -107,12 +82,18 @@ vfplot <- function( vf, plotType,
     xmin  <- -xmax
     xmax  <- -xmin2
     patternMap$xod <- -patternMap$xod
+    tesslocs$xod   <- -tesslocs$xod
   }
   # get the Voronoi tesselation tiles tiles
   vftess  <- vftessellation( patternMap, dist = 3 )
   vftiles <- tile.list( vftess[[1]] )
   vfhull  <- vftess[[2]]
 
+  # remove BS values and locations from patternMap
+  if( !is.na( bs[1] ) & plotType != "vf" ) {
+    vals[bs] <- ""
+    plotColor[bs,] <- c( 0.5, 0.5, 0.5 )
+  }
 # create a new window and plot data in it
 # window rescale is set to fixed to ensure re-sizing window doesn't re-size the plot
   height <- width * ( ymax - ymin ) / ( xmax - xmin )
@@ -132,13 +113,9 @@ vfplot <- function( vf, plotType,
     }
     options( device = device )
   }
-  vfplotloc( cloneDev, patternMap = patternMap,
-             vftiles = vftiles, vfhull = vfhull, loccol = plotColor,
+  vfplotloc( vals, patternMap = patternMap, loccol = plotColor,
+             vftiles = vftiles, vfhull = vfhull,
              xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
              txtfont = txtfont, pointsize = pointsize,
              showaxis = showaxis, colaxis = colaxis )
-  # add horizontal and vertical midlines
-  #axis( 1, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( xmin, xmax ), col = "black" )
-  #axis( 2, pos = 0, labels = FALSE, lwd.ticks = 0, at = c( ymin, ymax ), col = "black" )
-  
 }
