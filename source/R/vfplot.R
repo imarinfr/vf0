@@ -82,7 +82,6 @@ vfplot <- function( vf, plotType = "vf",
     xmin  <- -xmax
     xmax  <- -xmin2
     patternMap$xod <- -patternMap$xod
-    tesslocs$xod   <- -tesslocs$xod
   }
   # get the Voronoi tesselation tiles tiles
   vftess  <- vftessellation( patternMap, dist = 3 )
