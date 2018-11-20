@@ -10,6 +10,7 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000, sparklines = TRUE,
   pointsize <- 10
   txtsize   <- 6
   lumth     <- 0.4
+
   ##############
   # input checks
   ##############
@@ -264,7 +265,9 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000, sparklines = TRUE,
     collin <- rep( "gray25", nrow( loccol ) )
     collin[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < lumth] <- "white"
     collin[loccol$red < 0.1 & loccol$green < 0.6 & loccol$blue < 0.1] <- "white" # ad-hoc patch to make green scale look good
-    vfplot_sparklines( vf, collin = collin )
+    if( plotType == "vf" ) vfplot_sparklines( vf, ylim = c(  -5, 35 ), collin = collin )
+    if( plotType == "td" ) vfplot_sparklines( td, ylim = c( -35,  5 ), collin = collin )
+    if( plotType == "pd" ) vfplot_sparklines( pd, ylim = c( -35,  5 ), collin = collin )
   }
   # color-code map
   if( colorMapType == "slope" ) colorScale$cutoffs <- 10 * colorScale$cutoffs
@@ -277,37 +280,40 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000, sparklines = TRUE,
   colormapgraph( ncol = 1, mapval = colorScale, symbol = "square", inch = 0.22, pointsize = txtsize, notSeenAsBlack = FALSE )
   # plot permutation histogram
   par( new = TRUE )
-  par( fig = c( 0.10, 0.35, 0.07, 0.23 ) )
   if( ttail == "left" ) {
     coltxt  = rgb( red = 1.0, green = 0.0, blue = 0.0 )
-    colhist = rgb( red = 1.0, green = 0.0, blue = 0.0, alpha = 0.5 )
-    hist_poplr1( pres$s, pres$pval, pres$sp, ttail = ttail, coltxt = coltxt, colhist = colhist )
+    colhist = rgb( red = 1.0, green = 0.0, blue = 0.0, alpha = 0.25 )
+    par( fig = c( 0.10, 0.35, 0.07, 0.26 ) )
+    hist_poplr( pres$s, pres$pval, pres$sp, coltxt = coltxt, colhist = colhist )
   }
   if( ttail == "right" ) {
     coltxt  = rgb( red = 0.0, green = 0.5, blue = 0.0 )
-    colhist = rgb( red = 0.0, green = 0.5, blue = 0.0, alpha = 0.5 )
-    hist_poplr1( pres$sr, pres$pvalr, pres$spr, ttail = ttail, coltxt = coltxt, colhist = colhist )
+    colhist = rgb( red = 0.0, green = 0.5, blue = 0.0, alpha = 0.25 )
+    par( fig = c( 0.10, 0.35, 0.07, 0.26 ) )
+    hist_poplr( pres$sr, pres$pvalr, pres$spr, coltxt = coltxt, colhist = colhist )
   }
   if( ttail == "both" ) {
-    coltxtl  = rgb( red = 1.0, green = 0.0, blue = 0.0 )
-    colhistl = rgb( red = 1.0, green = 0.0, blue = 0.0, alpha = 0.5 )
+    coltxt  = rgb( red = 1.0, green = 0.0, blue = 0.0 )
+    colhist = rgb( red = 1.0, green = 0.0, blue = 0.0, alpha = 0.25 )
     coltxtr  = rgb( red = 0.0, green = 0.5, blue = 0.0 )
-    colhistr = rgb( red = 0.0, green = 0.5, blue = 0.0, alpha = 0.5 )
-    hist_poplr2( pres$s, pres$pval, pres$sp, pres$sr, pres$pvalr, pres$spr,
-                 coltxtl = coltxtl, colhistl = colhistl,
-                 coltxtr = coltxtr, colhistr = colhistr )
+    colhistr = rgb( red = 0.0, green = 0.5, blue = 0.0, alpha = 0.25 )
+    par( fig = c( 0.10, 0.35, 0.20, 0.28 ) )
+    hist_poplr( pres$s,  pres$pval,  pres$sp,  coltxt = coltxt,  colhist = colhist, showLabels = FALSE, plt = c( 0, 1, 0, 1 ) )
+    par( new = TRUE )
+    par( fig = c( 0.10, 0.35, 0.075, 0.19 ) )
+    hist_poplr( pres$sr, pres$pvalr, pres$spr, coltxt = coltxtr, colhist = colhistr, mpg = c( 1, 0.25, 0 ),  )
   }
 
   # general index 1
   par( new = TRUE )
-  par( fig = c( 0.375, 0.625, 0.07, 0.23 ) )
+  par( fig = c( 0.375, 0.625, 0.07, 0.26 ) )
   if ( summaryIndex1 == "md" )  progols( vfindices$tdate, vfindices$mtdev, projyears = 0, ylab = "md, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
   if ( summaryIndex1 == "ms" )  progols( vfindices$tdate, vfindices$msens, projyears = 0, ylab = "ms, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
   if ( summaryIndex1 == "gh" )  progols( vfindices$tdate, gh,              projyears = 0, ylab = "gh, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
   if ( summaryIndex1 == "ghr" ) progols( vfindices$tdate, ghr,             projyears = 0, ylab = "ghr, dB", markfl = TRUE, prggrp = grp ) # regression analysis
   # plot general height on age
   par( new = TRUE )
-  par( fig = c( 0.65, 0.9, 0.07, 0.23 ) )
+  par( fig = c( 0.65, 0.9, 0.07, 0.26 ) )
   if ( summaryIndex2 == "md" )  progols( vfindices$tdate, vfindices$mtdev, projyears = 0, ylab = "md, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
   if ( summaryIndex2 == "ms" )  progols( vfindices$tdate, vfindices$msens, projyears = 0, ylab = "ms, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
   if ( summaryIndex2 == "gh" )  progols( vfindices$tdate, gh,              projyears = 0, ylab = "gh, dB",  markfl = TRUE, prggrp = grp )  # regression analysis
@@ -325,9 +331,9 @@ vflayout_poplr <- function( vf, grp = 3, nperm = 5000, sparklines = TRUE,
   textvisit1       <- createviewport( "textvisit1",        left =  4.90, top =  1.05, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
   textlego         <- createviewport( "textlego",          left =  1.50, top =  4.55, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
   textpoplar       <- createviewport( "textpoplar",        left =  4.90, top =  4.55, width = 1.40, height = 0.30, pheight = mheight, pwidth = mwidth )
-  texthistogram    <- createviewport( "texthistogram",     left =  1.25, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textglobalindex1 <- createviewport( "textglobalindex1",  left =  3.50, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
-  textglobalindex2 <- createviewport( "textglobalindex2",  left =  5.75, top =  8.40, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
+  texthistogram    <- createviewport( "texthistogram",     left =  1.25, top =  7.90, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textglobalindex1 <- createviewport( "textglobalindex1",  left =  3.50, top =  7.90, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
+  textglobalindex2 <- createviewport( "textglobalindex2",  left =  5.75, top =  7.90, width = 1.00, height = 0.30, pheight = mheight, pwidth = mwidth )
   # create the list and then generate the tree and "push" it
   list <- vpList( mainInfo, infobox2, infobox3, textvisit0, textvisit1, textlego, textpoplar, texthistogram, textglobalindex1, textglobalindex2 )
   tree <- vpTree( printout, list )

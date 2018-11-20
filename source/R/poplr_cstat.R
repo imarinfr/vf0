@@ -15,6 +15,8 @@ poplr_cstat <- function( pval, truncVal = 1 ) {
   # truncate p-values
   k <- matrix( rep( 1, nrow( pval ) * ncol( pval ) ), nrow( pval ), ncol( pval ) )
   k[which( pval > truncVal )] <- 0
+  kr <- matrix( rep( 1, nrow( pval ) * ncol( pval ) ), nrow( pval ), ncol( pval ) )
+  kr[which( 1 - pval > truncVal )] <- 0
 
   # combine p-value test statistics
   # Fisher-class combination (product) of p-values with optional weigths

@@ -1,4 +1,4 @@
-vfplot_sparklines <- function( vf, collin = NULL, ... ) {
+vfplot_sparklines <- function( vf, ylim = c( -5, 35 ), collin = NULL, ... ) {
 
   texteval <- "vfsettings$locini"
   locini   <- eval( parse( text = texteval ) )
@@ -32,7 +32,7 @@ vfplot_sparklines <- function( vf, collin = NULL, ... ) {
   #  set a new plot region for each of the sparklines
   for( i in 1:nrow( locs ) )  {
     par( fig = locs[i,], mar = c( 0, 0, 0, 0 ), mgp = c( 0, 0, 0 ), new = TRUE )
-    plot( yeardif, vals[,i], ylim = c( -5, 35 ), type = "l", axes = FALSE, col = collin[i] )
+    plot( yeardif, vals[,i], ylim = ylim, type = "l", axes = FALSE, col = collin[i] )
   }
   par ( fig = oparfig ) # reset the graphics states 
 }
