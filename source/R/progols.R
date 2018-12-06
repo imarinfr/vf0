@@ -3,9 +3,7 @@ progols <- function( tdate, index, projyears = 0,
                      txtfont = "sans", pointsize = 10, cex = 1,
                      markfl = FALSE, prggrp = 3 ) {
 
-  lt      <- as.POSIXlt( tdate )
-  mon     <- lt$year * 12 + lt$mon
-  yeardif <- ( mon - mon[1] ) / 12
+  yeardif <- as.numeric( ( tdate - tdate[1] ) / 365.25 )
   xreg    <- c( min( yeardif ), max( yeardif ) + projyears )
 # get regression
   mdreg <- lm( index ~ yeardif )
