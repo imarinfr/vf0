@@ -21,7 +21,7 @@
 \seealso{\code{\link{fiberpathpsi}}}
 
 \examples{
-gcloc2psi( data.frame( x = c( 0, 10 ), y = c( 0, 10 ) ) )
+  gcloc2psi( data.frame( x = c( 0, 10 ), y = c( 0, 10 ) ) )
 }
 
 \author{Ivan Marin-Franch}

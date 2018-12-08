@@ -92,10 +92,9 @@ ghranktd <- function( td, minPts = 2, strategy = "isospaced", withinNormal = 95,
 # find values by interpolation
   mtdr <- approx( c( 1:length( mtdr ) ), mtdr, xout = idxcalc )$y
 
-  ghtdr$gh    <- mean( mtdr ) - mean( tdr )
+  ghtdr$gh    <- mean( tdr ) - mean( mtdr )
   ghtdr$rank  <- idxcalc
   ghtdr$tdrn  <- tdr
   ghtdr$mtdr  <- mtdr
-  if( is.na( ghtdr$gh ) ) stop("ERRORRRRRR")
   return( ghtdr )
 }

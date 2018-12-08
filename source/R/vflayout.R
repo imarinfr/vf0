@@ -1,11 +1,12 @@
-vflayout <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, filename = NULL ) {
+vflayout <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, filename = NULL,
+                      showaxis = FALSE, colaxis = "black" ) {
 
   if( nrow( vf ) > 1 ) {
     stop("Error! vf cannot have more than 1 rows")
   }
 
-  txtfont   <- "serif"
-  pointsize <- 12
+  txtfont   <- "sans"
+  pointsize <- 10
 
   # get normative values
   texteval <- "vfenv$nv"
@@ -44,15 +45,15 @@ vflayout <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, filenam
 # total-deviation plot
   opar <- par( no.readonly = TRUE )
   par( fig = c( 0.42, 0.97, 0.55, 0.98 ) )
-  vfplot( vf, plotType = "td" )
+  vfplot( vf, plotType = "td", showaxis = showaxis, colaxis = colaxis )
 # sensitivity plot
   par( new = TRUE )
   par( fig = c( 0.02, 0.6, 0.28, 0.71 ) )
-  vfplot( vf, plotType = "vf" )
+  vfplot( vf, plotType = "vf", showaxis = showaxis, colaxis = colaxis )
   # pattern-deviation plot
   par( new = TRUE )
   par( fig = c( 0.42, 0.97, 0.01, 0.44 ) )
-  vfplot( vf, plotType = "pd" )
+  vfplot( vf, plotType = "pd", showaxis = showaxis, colaxis = colaxis )
   # stimulus locations
   par( new = TRUE )
   par( fig = c( 0.769, 0.981, 0.42, 0.57 ) )

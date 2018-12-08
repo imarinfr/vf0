@@ -10,7 +10,7 @@ pdvalghr <- function( td ) {
     locnum <- eval( parse( text = texteval ) )
 # get PD values from obtained gh
     pd[i,locini:locini:( locini - 1 + locnum )] <-
-      pd[i,locini:( locini - 1 + locnum )] + ghranktd( td[i,] )$gh
+      pd[i,locini:( locini - 1 + locnum )] - ghranktd( td[i,] )$gh
   }
 
   return( pd )

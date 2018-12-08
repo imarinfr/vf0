@@ -1,11 +1,12 @@
-vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, filename = NULL ) {
+vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, filename = NULL,
+                         showaxis = FALSE, colaxis = "black" ) {
   
   if( nrow( vf ) > 1 ) {
     stop("Error! vf cannot have more than 1 rows")
   }
   
-  txtfont <- "serif"
-  sizetxt <- 12
+  txtfont   <- "sans"
+  pointsize <- 10
 
   # get normative values
   texteval <- "vfenv$nv"
@@ -44,26 +45,26 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
   # total-deviation plot
   opar <- par( no.readonly = TRUE )
   par( fig = c( 0.42, 0.97, 0.55, 0.98 ) )
-  vfplot( vf, plotType = "td" )
+  vfplot( vf, plotType = "td", showaxis = showaxis, colaxis = colaxis )
   # sensitivity plot
   par( new = TRUE )
   par( fig = c( 0.02, 0.6, 0.28, 0.71 ) )
-  vfplot( vf, plotType = "vf" )
+  vfplot( vf, plotType = "vf", showaxis = showaxis, colaxis = colaxis )
   # pattern-deviation plot
   par( new = TRUE )
   par( fig = c( 0.42, 0.97, 0.01, 0.44 ) )
-  vfplot( vf, plotType = "pdghr" )
+  vfplot( vf, plotType = "pdghr", showaxis = showaxis, colaxis = colaxis )
   # stimulus locations
   par( new = TRUE )
   par( fig = c( 0.769, 0.981, 0.42, 0.57 ) )
   par( mar = c( 0, 0, 0.5, 0.5 ) )
   stimLoc( perimetry = vf$tperimetry, pattern = vf$tpattern, eye = vf$seye,
-          txtfont = txtfont, pointsize = sizetxt )
+          txtfont = txtfont, pointsize = pointsize )
   # Bebie difference curve
   par( new = TRUE )
   par( fig = c( 0.01, 0.4, 0.07, 0.3 ) )
   par( mar = c( 3.25, 4.2, 0.5, 0.5 ) )
-  bebie( tdrank( tdval( vf ) ), txtfont = txtfont, pointsize = sizetxt, cex = 0.75 )
+  bebie( tdrank( tdval( vf ) ), txtfont = txtfont, pointsize = pointsize, cex = 0.75 )
   # color-code map
   par( new = TRUE )
   par( fig = c( 0.03, 0.3869, 0.015, 0.060 ) )
@@ -120,15 +121,15 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
     texteye <- paste( texteye, "(which?)", sep = " " )
   }
   text <- paste( text, texteye, sep = " " )
-  grid.text( text, x = 0.0, y = 1.0, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt, fontface = "bold" ) )
+  grid.text( text, x = 0.0, y = 1.0, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
   
   ######################################################
   # text: total deviation and pattern deviation
   ######################################################
   seekViewport( "tdtext" )
-  grid.text( "total deviation", x = 0.5, y = 1.0, just = c( "center", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt, fontface = "bold" ) )
+  grid.text( "total deviation", x = 0.5, y = 1.0, just = c( "center", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
   seekViewport( "pdtext" )
-  grid.text( "pattern deviation", x = 0.5, y = 1.0, just = c( "center", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt, fontface = "bold" ) )
+  grid.text( "pattern deviation", x = 0.5, y = 1.0, just = c( "center", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize, fontface = "bold" ) )
   
   ######################################################
   # Details about printouts
@@ -175,7 +176,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
   }
   
   text <- paste( textpattern, textalgorithm, sep = "\n" )
-  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt ) )
+  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
   ######################################################
   # Details about printouts
@@ -185,7 +186,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
   text <- paste( "norm vals: ", nv$nvname, sep = "" )
   text <- paste( text, substr( packageDescription( "visualFields" )$Date, 1, 4 ), sep = "\n" )
   text <- paste( text, "visualFields", packageDescription( "visualFields" )$Version, sep = " " )
-  grid.text( text, x = 1.00, y = 0.00, just = c( "right", "bottom" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt ) )
+  grid.text( text, x = 1.00, y = 0.00, just = c( "right", "bottom" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
   ######################################################
   # subject and test information
@@ -207,7 +208,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
     text <- paste( text, paste( ", pause: ", timetxt, sep = "" ), sep = "" )
   }
   text <- paste( text, "", sep = "\n" )
-  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt ) )
+  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
   ######################################################
   # add false positives and negatives, fixation losses
@@ -217,7 +218,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
   text <- "false positives"
   text <- paste( text, "false negatives", sep = "\n" )
   text <- paste( text, "fixation losses", sep = "\n" )
-  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt ) )
+  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
   seekViewport( "infotest2" )
   
@@ -228,7 +229,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
   text <- sfp
   text <- paste( text, sfn, sep = "\n" )
   text <- paste( text, sfl, sep = "\n" )
-  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt ) )
+  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
   ######################################################
   # visual-field results
@@ -260,7 +261,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
   if( !is.null( tdr ) ) {
     text <- paste( text, "GH", sep = "\n" )
   }
-  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt ) )
+  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
   seekViewport( "results2" )
   
@@ -271,7 +272,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
   if( !is.null( tdr ) ) {
     text <- paste( text, gh, sep = "\n" )
   }
-  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt ) )
+  grid.text( text, x = 1.00, y = 1.00, just = c( "right", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
   seekViewport( "results3" )
   
@@ -282,7 +283,7 @@ vflayoutghr <- function( vf, pwidth = 8.27, pheight = 11.69, margin = 0.25, file
   text <- paste( text, textp, sep = "\n" )
   textp <- paste( "(p < ", vfip$mvfi, " %)", sep = "" )
   text <- paste( text, textp, sep = "\n" )
-  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = sizetxt ) )
+  grid.text( text, x = 0.00, y = 1.00, just = c( "left", "top" ), gp = gpar( fontfamily = txtfont, fontsize = pointsize ) )
   
   # only if in save mode, then set device to off
   if( !is.null( filename ) ) {

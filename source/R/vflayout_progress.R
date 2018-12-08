@@ -1,7 +1,8 @@
 vflayout_progress <- function( vf, plotType, grp = 2, nperm = 5000,
                                colorMapType = "pval", colorScale = NULL,
                                filename = NULL,
-                               pwidth = 8.27, pheight = 11.69, margin = 0.25 ) {
+                               pwidth = 8.27, pheight = 11.69, margin = 0.25,
+                               showaxis = FALSE, colaxis = "black" ) {
 
   ##############
   # input checks
@@ -20,8 +21,8 @@ vflayout_progress <- function( vf, plotType, grp = 2, nperm = 5000,
   if( is.null( colorMapType) ) stop( "colorMapType must be 'slope', 'pval', or 'blind'" )
   if( colorMapType != "pval" & colorMapType != "slope" & colorMapType  != "blind" ) stop( "wrong colorMapType. Must be 'slope', 'pval', or 'blind'" )
 
-  txtfont        <- "serif"
-  pointsize      <- 12
+  txtfont   <- "sans"
+  pointsize <- 10
 
   # special locations in the visual field: BS locations
   bsxy   <- NULL
@@ -212,7 +213,8 @@ vflayout_progress <- function( vf, plotType, grp = 2, nperm = 5000,
   opar <- par( no.readonly = TRUE )
   # PoPLR pointwise plot
   par( fig = c( 0.05, 0.45, 0.30, 0.65 ) )
-  vfplot_poplr( pres$sl, pres$pval, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale )
+  vfplot_plr( pres$sl, pres$pvall, pres$vfdata, colorMapType = colorMapType, colorScale = colorScale,
+              showaxis = showaxis, colaxis = colaxis )
   # color scale
   par( new = TRUE )
   par( fig = c( 0.1, 0.325, 0.30, 0.33 ) )
@@ -224,15 +226,21 @@ vflayout_progress <- function( vf, plotType, grp = 2, nperm = 5000,
   # sensitivity plot first n visits
   par( new = TRUE )
   par( fig = c( 0.525, 1.00, 0.60, 0.95 ) )
-  vfplotloc( vffirst, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = colorf )
+  vfplotloc( vffirst, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = colorf,
+             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
+             showaxis = showaxis, colaxis = colaxis )
   # sensitivity plot middle n visits
   par( new = TRUE )
   par( fig = c( 0.525, 1.00, 0.30, 0.65 ) )
-  vfplotloc( vfmiddle, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = colorm )
+  vfplotloc( vfmiddle, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = colorm,
+             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
+             showaxis = showaxis, colaxis = colaxis )
   # sensitivity plot middle n visits
   par( new = TRUE )
   par( fig = c( 0.525, 1.00, 0.00, 0.35 ) )
-  vfplotloc( vflast, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = colorl )
+  vfplotloc( vflast, patternMap, vftiles = vftiles, vfhull = vfhull, loccol = colorl,
+             xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
+             showaxis = showaxis, colaxis = colaxis )
   par( opar )
 
   ######################################################
@@ -379,7 +387,7 @@ vflayout_progress <- function( vf, plotType, grp = 2, nperm = 5000,
   seekViewport( "results2" )
   
   text <- round( 10 * slm$coefficients[2,1], 1 )
-  text <- paste( text, round( pres$pcomb_obs, 3 ), sep = "\n" )
+  text <- paste( text, round( pres$pvall, 3 ), sep = "\n" )
   text <- paste( text, round( mean( index[idxfirst]  ), 2 ), sep = "\n" )
   text <- paste( text, round( mean( index[idxmiddle] ), 2 ), sep = "\n" )
   text <- paste( text, round( mean( index[idxlast]   ), 2 ), sep = "\n" )

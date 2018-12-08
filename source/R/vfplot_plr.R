@@ -1,43 +1,39 @@
-vfplot_poplr <- function( sl, pval, vfinfo, newWindow = FALSE,
-                          xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
-                          colorMapType = "pval", colorScale = NULL,
-                          txtfont = "sans", pointsize = 10, width = 6,
-                          showaxis = FALSE, colaxis = "white" ) {
+vfplot_plr <- function( sl, pval, vfinfo, newWindow = FALSE,
+                        xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
+                        colorMapType = "pval", colorScale = NULL,
+                        txtfont = "sans", pointsize = 10, width = 6,
+                        showaxis = TRUE, colaxis = "black" ) {
 
   # construct patternmap
   evaltxt    <- paste( vfinfo$tperimetry, "locmap$", vfinfo$tpattern, sep = "" )
-  patternMap <- eval( parse( text=evaltxt ) )
-  patternMap <- patternMap[,c( "xod", "yod" )]
+  patternMap <- eval( parse( text = evaltxt ) )
+  patternMap <- patternMap[, c( "xod", "yod" )]
   # get normative values
   texteval <- "vfenv$nv"
   nv       <- eval( parse( text = texteval ) )
   # get blind spot
-  evaltxt <- paste("vfsettings$", vfinfo$tpattern[1], "$bs", sep = "")
+  evaltxt <- paste( "vfsettings$", vfinfo$tpattern[1], "$bs", sep = "")
   bs <- eval( parse( text = evaltxt ) )
-
   if( !is.na( bs[1] ) ) {
-    bsloc <- patternMap[bs,]
+    bsloc      <- patternMap[bs,]
     patternMap <- patternMap[-bs,]
   } else {
-    # if there is no information about
-    bsloc <- data.frame( xod = c( 15, 15 ), yod = c(  3, -3 ) )
+    bsloc <- data.frame( xod = c( 15, 15 ), yod = c( 3, -3 ) )
   }
 
   # types of color map and ring map
-  if( is.null( colorMapType) ) stop( "colorMapType must be 'slope', 'pval', or 'blind'" )
-  if( colorMapType != "pval" & colorMapType != "slope" & colorMapType  != "blind" ) stop( "wrong colorMapType. Must be 'slope', 'pval', or 'blind'" )
+  if( is.null( colorMapType ) ) stop( "colorMapType must be 'slope', 'pval', or 'blind'" )
+  if( colorMapType != "pval" & colorMapType != "slope" & colorMapType != "blind" ) stop( "wrong colorMapType. Must be 'slope', 'pval', or 'blind'" )
 
-  # init all color values to white
-  pval  <- 100 * pval
-  pvalc <- rep( c( 100 ), length( pval ) )
-  pvalc[which( pval <= nv$pmapsettings$cutoffs[1] )] <- nv$pmapsettings$cutoffs[1]
-  for( i in 2:( length( nv$pmapsettings$cutoffs ) - 1) ) pvalc[which( pval > nv$pmapsettings$cutoffs[i-1] & pval <= nv$pmapsettings$cutoffs[i] )] <- nv$pmapsettings$cutoffs[i]
-  
   # get the conventional color scale
   if( colorMapType == "pval" ) {
     if( is.null( colorScale ) ) {
       colorScale  <- nv$pmapsettings
     }
+    pval  <- 100 * pval
+    pvalc <- rep( 100, length( pval ) )
+    pvalc[which( pval <= colorScale$cutoffs[1] )] <- colorScale$cutoffs[1]
+    for( i in 2:( length( colorScale$cutoffs ) - 1 ) ) pvalc[which( pval > colorScale$cutoffs[i - 1] & pval <= colorScale$cutoffs[i] )] <- colorScale$cutoffs[i]
     valForMapping <- pvalc
   }
   # inform the color scale for slopes
@@ -63,8 +59,7 @@ vfplot_poplr <- function( sl, pval, vfinfo, newWindow = FALSE,
   
   plotColor <- vfcolormap( valForMapping, mapval = colorScale )
 
-  # if not imposed, calculate limits of plot
-  # expand by 5% each axis
+  # if not imposed, calculate limits of plot expand by 5% each axis
   xrange <- max( patternMap$xod ) - min( patternMap$xod )
   yrange <- max( patternMap$yod ) - min( patternMap$yod )
   if( is.null( xmin ) ) xmin <- min( patternMap$xod ) - 0.025 * xrange
@@ -85,13 +80,14 @@ vfplot_poplr <- function( sl, pval, vfinfo, newWindow = FALSE,
     xmax  <- -xmin2
     patternMap$xod <- -patternMap$xod
   }
+
   # get the Voronoi tesselation tiles tiles
   vftess  <- vftessellation( patternMap, dist = 3 )
   vftiles <- tile.list( vftess[[1]] )
   vfhull  <- vftess[[2]]
 
-# create a new window and plot data in it
-# window rescale is set to fixed to ensure re-sizing window doesn't re-size the plot
+  # create a new window and plot data in it
+  # window rescale is set to fixed to ensure re-sizing window doesn't re-size the plot
   if( newWindow ) {
     height <- width * ( ymax - ymin ) / ( xmax - xmin )
     device <- options( "device" )
@@ -118,5 +114,4 @@ vfplot_poplr <- function( sl, pval, vfinfo, newWindow = FALSE,
              xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax,
              txtfont = txtfont, pointsize = pointsize,
              showaxis = showaxis, colaxis = colaxis )
-
 }

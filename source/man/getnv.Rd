@@ -14,7 +14,7 @@ returns the names of the variables containing the normative values and the stimu
 \seealso{ \code{\link{setnv}} }
 
 \examples{
-getnv()
+  getnv()
 }
 
 \author{Ivan Marin-Franch}

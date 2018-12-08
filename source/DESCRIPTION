@@ -2,10 +2,10 @@ Package: visualFields
 Type: Package
 Title: Statistical Methods for Visual Fields
 Description: A collection of tools for analyzing the field of vision. It provides a framework for development and use of innovative methods for visualization, statistical analysis, and clinical interpretation of visual-field loss and its change over time. It is intended to be a tool for collaborative research.
-Version: 0.5.3
-Date: 2018-04-09
-Author: Ivan Marin-Franch <ivan.marin.franch@gmail.com>
-Maintainer: Ivan Marin-Franch <ivan.marin.franch@gmail.com>
+Version: 0.6
+Date: 2018-11-15
+Author: Ivan Marin-Franch <imarinfr@optocom.es>
+Maintainer: Ivan Marin-Franch <imarinfr@optocom.es>
 URL: http://people.eng.unimelb.edu.au/aturpin/opi/index.html
 Depends: R (>= 2.14.0)
 Imports: stats, utils, grid, flip (>= 2.1), matrixStats, Hmisc, gtools, deldir, spatstat

@@ -14,7 +14,7 @@
 \value{conditional retest distribution and the \code{( 1 - alpha / 2 )} conditional retest intervals}
 
 \examples{
-vfcondretest <- retestconddist( vf91016left[c(1:4),], nbase = 2, nfollow = 2 )
+  vfcondretest <- retestconddist( vf91016left[c(1:4),], nbase = 2, nfollow = 2 )
 }
 
 \references{

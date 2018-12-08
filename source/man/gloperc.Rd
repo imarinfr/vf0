@@ -19,9 +19,4 @@ percentiles for global indices
 
 \seealso{\code{\link{vfindex}}, \code{\link{vfstats}}, \code{\link{vfiperc}}, \code{\link{locperc}}}
 
-\examples{
-# DO NOT RUN
-# gperc <- gloper()
-}
-
 \author{Ivan Marin-Franch}

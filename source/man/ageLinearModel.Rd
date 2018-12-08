@@ -26,10 +26,4 @@ returns a table with intercepts and slopes modelling age-related mean sensitivit
 
 \seealso{\code{\link{sdnv}}, \code{\link{locperc}}, \code{\link{quad2Dfit}}}
 
-\examples{
-# DO NOT RUN
-# to test this, load a file using e.g. loadvfcsv with control data and then run
-# agelm <- ageLinearModel( vf )
-}
-
 \author{Ivan Marin-Franch}

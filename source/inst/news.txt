@@ -179,7 +179,7 @@ fixed agecalc so that we can ages from a vector of dates and of dobs
 v0.4.2 21/01/2015
 fixed small bug in loadvfxml: problem with dates
 fixed small bug in vflayout: correct format for duration and pause
-added “visualFields::” to global variables and environment within visualFields
+added ?visualFields::? to global variables and environment within visualFields
 changed fonts to make them compatible with both Windows and Mac
 
 v0.4.3 15/01/2016
@@ -195,17 +195,24 @@ patches, patches, patches
 inclusion of new grids of testing locations
 
 v0.5 26/03/2017
-add function to obtain retest conditional distributions used for graphs such as Fig 4 of Artes et al. IOVS, 2005. “Threshold and Variability Properties of Matrix Frequency-Doubling Technology and Standard Automated Perimetry in Glaucoma”
+add function to obtain retest conditional distributions used for graphs such as Fig 4 of Artes et al. IOVS, 2005. ?Threshold and Variability Properties of Matrix Frequency-Doubling Technology and Standard Automated Perimetry in Glaucoma?
 
 Major overhaul of vf printouts. Inclusion of Voronoi diagrams for tessellation. All previous vf printouts and vf plots have been renamed to:
 
 vfplotloc2.R
 vfplot2.R
-vflayout2.Rvflayout2ghr.Rvfplot2_poplr.Rvflayout2_poplr.Rvflayout2_legoplot.R
+vflayout2.R
+vflayout2ghr.R
+vfplot2_poplr.R
+vflayout2_poplr.R
+vflayout2_legoplot.R
+
 New ones based on Voronoi and tessellation paradigm to determine the regions for printouts have been added:
 
 vfplotloc.R
-vfplot.Rvflayout.Rvflayoutghr.R
+vfplot.R
+vflayout.R
+vflayoutghr.R
 vfplot_poplr.R
 vflayout_poplr.R
 
@@ -225,13 +232,22 @@ Added function vf2gcloc.r that calculates the corresponding GC body positions fo
 v0.5.2 13/12/2017
 Added functions that implement the Jansonious structure-function map 2012:
 
-cart2jpolar: converts from (x,y) in degrees to polar coordinates. This is a necessary step to compute average fiber paths as a function of their angle of incidence in the optic nerve head with the Jansonius map.jpolar2cart: converts to (x,y) in degrees from polar coordinates.fiberpathpsi: generates a function that renders the average path of a nerve fiber bundle that exits through the optic nerve head with a particular angle.
-gcloc2psi: this is the inverse of the model: it obtains the angle of incidence psi of the average path that passes through position (x,y)
-psi2oct: Obtains the angle of incidence in the circular oct scan from the average path that starts at an angle psi from the optic nerve head. The operation psi2oct( gloc2psi ) maps vf locations with RNFLT angles so that the thickness that corresponds to each vf location can be estimated. This can be used in conjuction with vf2gcloc to correct for ganglion cell body displacement from vf location.
+cart2jpolar: converts from (x,y) in degrees to polar coordinates. This is a necessary step to compute average fiber paths as a function of their angle of incidence in the optic nerve head with the Jansonius map.
 
-v0.5.3 25/01/2018
-Removed the ugly text shadows from the printouts. Used black except if background is too dark, then use white.
+jpolar2cart: converts to (x,y) in degrees from polar coordinates.
 
-Added, finally, Artes’ data from
+fiberpathpsi: generates a function that renders the average path of a nerve fiber bundle that exits through the optic nerve head with a particular angle.
 
-[1] P. H. Artes, N. O’Leary, M. T. Nicolela, B. C. Chauhan, and D. P. Crabb. Visual field progression in glaucoma: What is the specificity of the guided progression analysis? American Academy of Ophthalmology, 121(10):2023-2027, 2014.
+gcloc2psi: this is the inverse of the model: it obtains the angle of incidence psi of the average path that passes through position (x,y)
+
+psi2oct: Obtains the angle of incidence in the circular oct scan from the average path that starts at an angle psi from the optic nerve head. The operation psi2oct( gloc2psi ) maps vf locations with RNFLT angles so that the thickness that corresponds to each vf location can be estimated. This can be used in conjuction with vf2gcloc to correct for ganglion cell body displacement from vf location.
+
+v0.5.4 17/06/2018
+Many edits, including the addition of Artes data from
+
+[1] P. H. Artes, N. O?Leary, M. T. Nicolela, B. C. Chauhan, and D. P. Crabb. Visual field progression in glaucoma: What is the specificity of the guided progression analysis? American Academy of Ophthalmology, 121(10):2023-2027, 2014.
+
+Also added a function to load data extracted from the Octopus device
+
+v0.5.5 12/11/2018
+Final entry to this news file since now we use GITHUB to manage versions. In this version, the v2 display functions (vplot2, etc) have been removed and some other files for PoPLR visualization have been upgraded an improved.

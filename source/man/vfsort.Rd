@@ -12,7 +12,7 @@ return a sorted vf
 }
 
 \examples{
-vfsort( vf91016left, decreasing = TRUE )
+  vfsort( vf91016left, decreasing = TRUE )
 }
 
 \author{Ivan Marin-Franch}

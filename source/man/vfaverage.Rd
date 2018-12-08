@@ -11,7 +11,7 @@ returns the location average of vf.
 }
 
 \examples{
-vfaverage( vf91016left )
+  vfaverage( vf91016left )
 }
 
 \author{Ivan Marin-Franch}

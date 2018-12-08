@@ -28,9 +28,4 @@ estimation of the general height of the visual field in patients with glaucoma.
 Graefe's Archive Clinical Experimental Ophthalmology, 252(5):801-809, 2014.
 }
 
-\examples{
-#td <- tdval( vf91016right[15,] )
-#ghrank <- ghranktd( td )
-}
-
 \author{Ivan Marin-Franch}

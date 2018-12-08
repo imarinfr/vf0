@@ -10,7 +10,7 @@
 \value{returns a table with demographics and weighted statistics}
 
 \examples{
-vfdemog <- vfdemographics( vf91016right )
+  vfdemog <- vfdemographics( vf91016right )
 }
 
 \author{Ivan Marin-Franch}

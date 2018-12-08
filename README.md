@@ -23,7 +23,7 @@ If you want to test new features, you can also directly download, build and inst
 install.packages("devtools")
 
 library(devtools)
-install_github("imarinfr/visualFields")
+install_github("imarinfr/visualFields/source")
 ```
 
 ## How can I contribute to this project?

@@ -12,7 +12,7 @@ returns the Voronoi diagrams and the outer convex hull of the visual field area 
 }
 
 \examples{
-vftess <- vftessellation( saplocmap$p24d2 )
+  vftess <- vftessellation( saplocmap$p24d2 )
 }
 
 \author{Ivan Marin-Franch}

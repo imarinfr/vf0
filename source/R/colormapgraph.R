@@ -1,14 +1,13 @@
 colormapgraph <- function( ncol = 3, mapval = NULL, notSeenAsBlack = TRUE,
                            txtfont = "sans", pointsize = 10,
-                           outerSymbol = "circle", outerSize = 1, outerInch = 0.18 ) {
+                           symbol = "circle", size = 1, inch = 0.18 ) {
+
+  lumth <- 0.4
 
   if( is.null( mapval ) ) {
     texteval <- "vfenv$nv$pmapsettings"
     mapval <- eval( parse( text = texteval ) )
   }
-
-  mapval$cutoffs[ length( mapval$cutoffs ) ] <-
-          paste( ">",  mapval$cutoffs[ length( mapval$cutoffs ) - 1 ], sep = "" )
 
   total <- nrow( mapval )
   if( notSeenAsBlack ) total <- total + 1
@@ -27,24 +26,24 @@ colormapgraph <- function( ncol = 3, mapval = NULL, notSeenAsBlack = TRUE,
   ymin     <- min( coords$y ) - 1 / nrow
   ymax     <- max( coords$y ) + 1 / nrow
 # get rgb and text to plot
-  rgbval <- NULL
+  loccol <- NULL
   txtval   <- NULL
   idx <- 0
   if( notSeenAsBlack ) {
     idx <- 1
-    rgbval$red[idx]   <- 0
-    rgbval$green[idx] <- 0
-    rgbval$blue[idx]  <- 0
+    loccol$red[idx]   <- 0
+    loccol$green[idx] <- 0
+    loccol$blue[idx]  <- 0
     txtval[idx]       <- "NS"
   }
   for( i in 1:nrow( mapval ) ) {
-    rgbval$red[i+idx]   <- mapval$red[i]
-    rgbval$green[i+idx] <- mapval$green[i]
-    rgbval$blue[i+idx]  <- mapval$blue[i]
+    loccol$red[i+idx]   <- mapval$red[i]
+    loccol$green[i+idx] <- mapval$green[i]
+    loccol$blue[i+idx]  <- mapval$blue[i]
     txtval[i+idx]       <- as.character( mapval$cutoffs[i] )
   }
-  rgbval <- as.data.frame( rgbval )
-  colval <- rgb( rgbval )
+  loccol <- as.data.frame( loccol )
+  colval <- rgb( loccol )
 
 # opar <- par( no.readonly = TRUE )
   oplt    <- par()$plt
@@ -56,13 +55,13 @@ colormapgraph <- function( ncol = 3, mapval = NULL, notSeenAsBlack = TRUE,
 
 # legend
   plot( coords$x, coords$y, type = "n", axes = FALSE, xlab = "", ylab = "", xlim = c( xmin, xmax ), ylim = c( ymin, ymax ) )
-  outerDimensions <- t( matrix( data = rep( outerSize, nrow( coords ) ),nrow = length( outerSize ), ncol = nrow( coords ) ) )
-  evaltxt <- paste( "symbols( coords$x, coords$y, " , outerSymbol, " = outerDimensions, add = TRUE, inches = outerInch, bg = colval, fg = colval, lwd = 1 )", sep = "" )
+  dimensions <- t( matrix( data = rep( size, nrow( coords ) ),nrow = length( size ), ncol = nrow( coords ) ) )
+  evaltxt <- paste( "symbols( coords$x, coords$y, " , symbol, " = dimensions, add = TRUE, inches = inch, bg = colval, fg = colval, lwd = 1 )", sep = "" )
   eval( parse( text = evaltxt ) )
 
   coltxt <- rep( "black", length( coords$x ) )
-  coltxt[( rgbval$red + rgbval$green + rgbval$blue ) / 3 < 0.25] <- "white"
-  
+  coltxt[( 0.2126 * loccol$red + 0.7152 * loccol$green + 0.0722 * loccol$blue ) < lumth] <- "white"
+  coltxt[loccol$red < 0.1 & loccol$green < 0.6 & loccol$blue < 0.1] <- "white" # ad-hoc patch to make green scale look good
   text( coords$x, coords$y, txtval, col = coltxt )
   
   par( plt = oplt )

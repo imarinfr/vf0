@@ -19,8 +19,9 @@
 \seealso{\code{\link{tdrank}}, \code{\link{tdrankperc}}}
 
 \examples{
-# DO NOT EXECUTE
-#tdrankadjperc( td )
+  \donttest{
+    tdrankadjperc( td )
+  }
 }
 
 \author{Ivan Marin-Franch}
