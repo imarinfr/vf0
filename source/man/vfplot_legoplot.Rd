@@ -6,7 +6,7 @@
                         loccolout, loccolin, radius = 2,
                         xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
                         txtfont = "sans", pointsize = 10,
-                        showaxis = TRUE, colaxis = "black" )}
+                        showaxis = FALSE, colaxis = "black" )}
 \arguments{
   \item{vals}{values to show in the lego-plot, typically differences between baseline and final visual field tests}
   \item{patternMap}{locations where to plot symbols, the TD and PD values}
@@ -18,7 +18,7 @@
   \item{xmin, xmax, ymin, ymax}{minimum and maximum limits on the x and y axes, in degrees of visual angle. If \code{NULL}, then the limits are the maximum and minimum location values + 2.5 percent of the range. Default is \code{NULL}.}
   \item{txtfont}{font face of the text with visual-sensitivity values. Default is \code{sans}}
   \item{pointsize}{size of the text with visual-sensitivity values. Default is \code{10}}
-  \item{showaxis}{Whether to show axis or not. Default is \code{TRUE}}
+  \item{showaxis}{Whether to show axis or not. Default is \code{FALSE}}
   \item{colaxis}{Color of the axis to show, if \code{showaxis} is \code{TRUE}. Default is \code{black}}
 }
 \details{Shows the legoplots}

@@ -1,7 +1,7 @@
 vfplotloc <- function( vals, patternMap, loccol, vftiles, vfhull,
                        xmin, xmax, ymin, ymax,
                        txtfont = "sans", pointsize = 10,
-                       showaxis = TRUE, colaxis = "black" ) {
+                       showaxis = FALSE, colaxis = "black" ) {
   lumth <- 0.4
 
 # init

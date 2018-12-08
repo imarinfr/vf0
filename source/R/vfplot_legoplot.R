@@ -1,7 +1,7 @@
 vfplot_legoplot <- function( vals, patternMap, vftiles, vfhull, loccolout, loccolin, radius = 2,
                              xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
                              txtfont = "sans", pointsize = 10,
-                             showaxis = TRUE, colaxis = "black" ) {
+                             showaxis = FALSE, colaxis = "black" ) {
   lumth <- 0.4
   
   # if not imposed, calculate limits of plot
