@@ -2,7 +2,7 @@ vfplot <- function( vf, plotType = "vf",
                     xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
                     notSeenAsBlack = TRUE, newWindow = FALSE,
                     txtfont = "sans", pointsize = 10, width = 6,
-                    showaxis = TRUE, colaxis = "black" ) {
+                    showaxis = FALSE, colaxis = "black" ) {
 
   # check that vf has only 1 entry
   if( nrow( vf ) > 1 ) {

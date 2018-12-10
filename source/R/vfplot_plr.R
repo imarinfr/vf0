@@ -2,7 +2,7 @@ vfplot_plr <- function( sl, pval, vfinfo, newWindow = FALSE,
                         xmin = NULL, xmax = NULL, ymin = NULL, ymax = NULL,
                         colorMapType = "pval", colorScale = NULL,
                         txtfont = "sans", pointsize = 10, width = 6,
-                        showaxis = TRUE, colaxis = "black" ) {
+                        showaxis = FALSE, colaxis = "black" ) {
 
   # construct patternmap
   evaltxt    <- paste( vfinfo$tperimetry, "locmap$", vfinfo$tpattern, sep = "" )
