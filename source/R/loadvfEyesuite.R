@@ -7,6 +7,7 @@
 #' @return a vf object
 
 loadvfEyesuite <- function(filename, date_format = "%d.%m.%Y") {
+  
   eyesuiteNames <- c(
     "id",
     "lastname",
@@ -91,6 +92,8 @@ loadvfEyesuite <- function(filename, date_format = "%d.%m.%Y") {
   vFieldsRaw <- vFieldsRaw[!is.na(vFieldsRaw$strategy), ]
   vFieldsRaw <- vFieldsRaw[!is.na(vFieldsRaw$pattern), ]
   vFieldsRaw <- vFieldsRaw[!is.na(vFieldsRaw$tperimetry), ]
+  
+  if (nrow(vFieldsRaw) < 1) stop("There are no valid visual fields in this file.")
   
   # add numbers for each visual field
   vFieldsRaw$i <- 1:nrow(vFieldsRaw)
