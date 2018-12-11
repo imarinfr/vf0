@@ -7,6 +7,7 @@
 #' @return a vf object
 
 loadvfEyesuite <- function(filename, date_format = "%d.%m.%Y") {
+  
   eyesuiteNames <- c(
     "id",
     "lastname",
@@ -65,7 +66,6 @@ loadvfEyesuite <- function(filename, date_format = "%d.%m.%Y") {
   names(vFieldsRaw)[seq(eyesuiteNames)] <- eyesuiteNames
   
   # use factors to replace values
-  # the data.table function ":=" for replacing by reference is used to safe time
   vFieldsRaw$eye <- factor(vFieldsRaw$eye,
                              levels = c(0, 1, 3),
                              labels = c("OD", "OS", "binocular"))
@@ -88,6 +88,12 @@ loadvfEyesuite <- function(filename, date_format = "%d.%m.%Y") {
   vFieldsRaw$tperimetry <- factor(vFieldsRaw$tperimetry,
                                     levels = c(0, 1),
                                     labels = c("sap", "swap"))
+  
+  vFieldsRaw <- vFieldsRaw[!is.na(vFieldsRaw$strategy), ]
+  vFieldsRaw <- vFieldsRaw[!is.na(vFieldsRaw$pattern), ]
+  vFieldsRaw <- vFieldsRaw[!is.na(vFieldsRaw$tperimetry), ]
+  
+  if (nrow(vFieldsRaw) < 1) stop("There are no valid visual fields in this file.")
   
   # add numbers for each visual field
   vFieldsRaw$i <- 1:nrow(vFieldsRaw)
