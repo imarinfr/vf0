@@ -15,8 +15,8 @@ poplr_pstat <- function( vf, porder, sltest = NULL ) {
   texteval <- "vfsettings$locini"
   locini   <- eval( parse( text = texteval ) )
 
-  # extract age and location values from vf and delete blind spots
-  age <- as.numeric( vf$tdate - vf$tdate[1] ) / 365.25 # it should be difference in years from basline date
+  # extract years and location values from vf and delete blind spots
+  years <- as.numeric( vf$tdate - vf$tdate[1] ) / 365.25 # it should be difference in years from basline date
   evaltxt <- paste( "vfsettings$", vf$tpattern[1], "$bs", sep = "" )
   bs <- eval( parse( text = evaltxt ) )
   vf <- vf[,locini:ncol( vf )]
@@ -37,18 +37,18 @@ poplr_pstat <- function( vf, porder, sltest = NULL ) {
   # get the locations for which sensitivity did not change
   invariantloc <- as.numeric( which( colSds( vf ) <= precision ) )
   # point-wise linear regression over time permutation-invarian values
-  sage  <- sum( age )
-  mage  <- mean( age )
-  ssage <- ( ntest - 1 ) * var( age )
-  kvage <- ( ntest - 2 ) * ssage
+  syears  <- sum( years )
+  myears  <- mean( years )
+  ssyears <- ( ntest - 1 ) * var( years )
+  kvyears <- ( ntest - 2 ) * ssyears
   mvf   <- c( colMeans( vf ) )
   ssvf  <- c( ( ntest - 1 ) * colVars( vf ) )
   # calculate regression slopes, intercepts, and slope standard errors per location
   for( loc in 1:nloc ) {
-    res$sl[,loc]  <- ( matrix( age[porder], nrow( porder ), ncol( porder ) ) %*% vf[,loc]
-                       - sage * mean( vf[,loc] ) ) / ssage
-    res$int[,loc] <- rep( mvf[loc], nperm ) - mage * res$sl[,loc]
-    varslope <- ( rep( ssvf[loc], nperm ) - ssage * res$sl[,loc]^2 ) / kvage
+    res$sl[,loc]  <- ( matrix( years[porder], nrow( porder ), ncol( porder ) ) %*% vf[,loc]
+                       - syears * mean( vf[,loc] ) ) / ssyears
+    res$int[,loc] <- rep( mvf[loc], nperm ) - myears * res$sl[,loc]
+    varslope <- ( rep( ssvf[loc], nperm ) - ssyears * res$sl[,loc]^2 ) / kvyears
     varslope[which( varslope < 0 )] <- 0
     res$se[,loc] <- sqrt( varslope )
   }
