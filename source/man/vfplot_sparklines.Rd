@@ -11,10 +11,4 @@
 }
 \details{Plots sparklines on top of other vfplots. It is used for the PLR plot in the PoPLR layout.}
 
-\examples{
-  \donttest{
-    vflayout_poplr( vf91016right )
-  }
-}
-
 \author{Paul H Artes}

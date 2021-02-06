@@ -23,10 +23,4 @@
 }
 \details{Shows the legoplots}
 
-\examples{
-  \donttest{
-    vflayout_poplr( vf91016right )
-  }
-}
-
 \author{Ivan Marin-Franch, Paul H Artes}

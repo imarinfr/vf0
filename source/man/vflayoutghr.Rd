@@ -16,10 +16,4 @@
 
 \seealso{\code{\link{vflayout}}, \code{\link{vfplot}}, \code{\link{vfplotloc}}}
 
-\examples{
-  \donttest{
-    vflayoutghr( vf91016right[15,] )
-  }
-}
-
 \author{Ivan Marin-Franch}

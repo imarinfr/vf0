@@ -19,9 +19,8 @@
 \seealso{\code{\link{tdrank}}, \code{\link{tdrankperc}}}
 
 \examples{
-  \donttest{
-    tdrankadjperc( td )
-  }
+  td <- tdval( vf91016right )
+  tdr <- tdrankadjperc( td )
 }
 
 \author{Ivan Marin-Franch}

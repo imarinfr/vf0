@@ -41,6 +41,7 @@ sdnvghr <- function( vf, smooth = TRUE, smoothFunction = quad2Dfit ) {
 # I don't know why R doesn't have a way to compute the variances per column (that
 # I could find) of a data frame so we have to do a very inneficient loop here
   for( i in 1:settings$locnum ) {
+    if( ( i + locini - 1 ) %in% bspos ) next
     sds[i] <- sqrt( wtd.var( pdghr[,i + locini - 1], weights = idweight, normwt = TRUE ) )
   }
 

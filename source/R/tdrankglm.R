@@ -1,6 +1,5 @@
-tdrankglm <- function( tdr, familytxt = c( "gaussian" ), link = make.link( "logit" ), rankCentral = NULL, scaleFactor = 52.4 ) {
-# gets a generalized linear model fit to total-deviation curve
-
+tdrankglm <- function( tdr, familytxt = c( "gaussian" ), link = make.link( "logit" ), rankCentral = NULL ) {
+  # gets a generalized linear model fit to total-deviation curve
   tdrglm <- NULL
 
   tdrtofit <- tdr
@@ -11,6 +10,7 @@ tdrankglm <- function( tdr, familytxt = c( "gaussian" ), link = make.link( "logi
   }
   rankval <- c( 1:length( tdr ) )
 # prepare to get glm fit
+  scaleFactor <- length(rankCentral) * 1.0075 # obscure scale factor, I know!!!
   glmfit   <- NULL
   glmfit$x <- -tdrtofit
   glmfit$y <- rankCentral / scaleFactor
