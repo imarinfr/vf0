@@ -3,7 +3,7 @@ Type: Package
 Title: Statistical Methods for Visual Fields
 Description: A collection of tools for analyzing the field of vision. It provides a framework for development and use of innovative methods for visualization, statistical analysis, and clinical interpretation of visual-field loss and its change over time. It is intended to be a tool for collaborative research.
 Version: 0.6.1
-Date: 2020-02-07
+Date: 2021-02-08
 Author: Ivan Marin-Franch <imarinfr@optocom.es>
 Maintainer: Ivan Marin-Franch <imarinfr@optocom.es>
 URL: https://people.eng.unimelb.edu.au/aturpin/opi/index.html
