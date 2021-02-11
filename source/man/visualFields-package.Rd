@@ -7,7 +7,7 @@
 This is a collection of tools for analyzing the field of vision. It provides a framework for the development and use of innovative methods for visualization, statistical analysis, and clinical interpretation of visual-field loss and its change over time. \code{visualFields} is intended to be a tool for collaborative research
 }
 
-\seealso{\code{OPI}, the Open Perimetry Initiative \url{http://people.eng.unimelb.edu.au/aturpin/opi/index.html}}
+\seealso{\code{OPI}, the Open Perimetry Initiative \url{https://people.eng.unimelb.edu.au/aturpin/opi/index.html}}
 
 \references{
 [1] Marín-Franch I & Swanson WH. The visualFields package: A tool for analysis and visualization of visual fields. Journal of Vision, 2013, 13(4):10, 1-12
