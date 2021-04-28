@@ -65,7 +65,7 @@ bebie <- function( tdr, type = "conventional", diff = TRUE, percentiles = TRUE,
         evaltxt <- paste( "vfenv$nv$", tdr$tdr$tpattern, "_", tdr$tdr$talgorithm, "$perctdrank", sep = "" )
       }
     }
-    tdrperc <- eval( parse( text = evaltxt ) ) 
+    tdrperc <- eval( parse( text = evaltxt ) )
   }
   ops     <- par()$ps
   ofamily <- par()$family
