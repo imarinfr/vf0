@@ -5,7 +5,7 @@ tdrank <- function( td ) {
 
   tdr <- td
   for( i in 1:nrow( td ) ) {
-    tdr[i,locini:ncol( td )] <- td[i,( order( td[i,locini:ncol( td )], decreasing = TRUE ) + locini - 1 )]
+    tdr[i,locini:ncol( td )] <- td[i,( order( as.numeric(td[i,locini:ncol( td )]), decreasing = TRUE ) + locini - 1 )]
   }
 # Remove all columns that are NAs because they correspond to locations of the blind spot.
 # This is a bit clumsy, but necessary if we allow vf-objects to have different patterns.
