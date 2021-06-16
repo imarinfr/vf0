@@ -58,6 +58,6 @@ poplr_pstat <- function( vf, porder, sltest = NULL ) {
   res$int[,invariantloc] <- vf[1,invariantloc]
   res$se[,invariantloc]  <- precision
   # test sensitivity slope lower than specified slope
-  res$locpvals <- pt( ( res$sl - t( matrix( rep( sltest, nloc * nperm ), nloc, nperm ) ) ) / res$se, ntest - 2 )
+  res$locpvals <- pt( ( res$sl - t( matrix( rep( sltest, nperm ), nloc, nperm ) ) ) / res$se, ntest - 2 )
   return( res )
 }
